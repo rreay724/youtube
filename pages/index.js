@@ -1,9 +1,7 @@
 import Head from "next/head";
 import { Header, Player } from "../components/index";
-import { API_KEY } from "../keys";
 
 export default function Home({ data }) {
-  console.log(data?.items);
   return (
     <div>
       <Head>
@@ -11,18 +9,21 @@ export default function Home({ data }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      {data.items?.map(({ id }) => (
-        <Player id={id} />
-      ))}
 
-      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center"></main>
+      <main className="flex flex-col items-center justify-center w-full px-20 text-center">
+        <section>
+          {data.items?.map(({ id }) => (
+            <Player key={id} id={id} />
+          ))}
+        </section>
+      </main>
     </div>
   );
 }
 
 export async function getServerSideProps() {
   const data = await fetch(
-    `https://youtube.googleapis.com/youtube/v3/videos?part=contentDetails&part=player&part=id&chart=mostPopular&key=${API_KEY}`
+    `https://youtube.googleapis.com/youtube/v3/videos?part=contentDetails&part=player&part=id&chart=mostPopular&key=${process.env.NEXT_PUBLIC_API_KEY}`
   ).then((res) => res.json());
 
   return {
