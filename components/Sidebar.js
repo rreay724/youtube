@@ -1,19 +1,23 @@
-import { HomeIcon } from "@heroicons/react/outline";
-import { CollectionIcon } from "@heroicons/react/outline";
+import {
+  HomeIcon,
+  CollectionIcon,
+  SearchCircleIcon,
+} from "@heroicons/react/outline";
 import { AiOutlineCompass } from "react-icons/ai";
 
 function Sidebar() {
   return (
-    <div className="overflow-scroll pt-5 w-72 bg-black-light hidden sm:inline-flex md:inline-flex lg:inline-flex xl:inline-flex 2xl:inline-flex">
+    <div
+      className="overflow-scroll pt-2 w-72 bg-black-light hidden sm:inline-flex md:inline-flex 
+    lg:inline-flex xl:inline-flex 2xl:inline-flex"
+    >
       <div className="w-full">
         <div className="sidebarComponent">
           <HomeIcon className="w-10 p-2" />
           <p className="pl-5 text-sm">Home</p>
         </div>
         <div className="sidebarComponent">
-          <div className="w-10 p-2 pl-3">
-            <AiOutlineCompass />
-          </div>
+          <SearchCircleIcon className="w-10 p-2" />
           <p className="pl-5 text-sm">Explore</p>
         </div>
         <div className="sidebarComponent">

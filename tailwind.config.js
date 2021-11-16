@@ -10,7 +10,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        black: { superLight: "#333333", light: "#292929", medium: "#191919" },
+        black: {
+          superDuperLight: "#707070",
+          superLight: "#333333",
+          light: "#292929",
+          medium: "#191919",
+        },
       },
     },
   },

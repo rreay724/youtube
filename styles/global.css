@@ -4,6 +4,6 @@
 
 @layer components {
   .sidebarComponent {
-    @apply text-gray-300 px-4 flex items-center hover:bg-black-superLight cursor-pointer py-1 mr-4;
+    @apply text-gray-300 px-4 flex items-center hover:bg-black-superLight cursor-pointer py-1 mr-4 active:bg-black-superDuperLight;
   }
 }

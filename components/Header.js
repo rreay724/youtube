@@ -8,7 +8,7 @@ function Header() {
   const [searchInput, setSearchInput] = useState("");
 
   return (
-    <header className="sticky top-0 z-50 grid grid-cols-3 bg-black-light md:px-10 items-center">
+    <header className="sticky top-0 z-50 grid grid-cols-3 bg-black-light md:pl-6 items-center">
       <div
         onClick={() => {
           router.push("/");
@@ -16,10 +16,12 @@ function Header() {
         className="relative flex items-center h-16 cursor-pointer my-auto"
       >
         <Image
-          src="https://logos-world.net/wp-content/uploads/2020/04/YouTube-Logo.png"
-          layout="fill"
+          src="/YouTube-Logo.png"
+          width={100}
+          height={40}
           objectFit="contain"
           objectPosition="left"
+          className=""
         />
       </div>
       <div className="flex items-center md:shadow-sm h-12 w-full border border-black-medium bg-black-superLight">
