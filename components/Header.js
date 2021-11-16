@@ -8,7 +8,7 @@ function Header() {
   const [searchInput, setSearchInput] = useState("");
 
   return (
-    <header className="sticky top-0 z-50 grid grid-cols-3  bg-black bg-opacity-80 md:px-10  border-b  items-center">
+    <header className="sticky top-0 z-50 grid grid-cols-3 bg-black-light md:px-10 items-center">
       <div
         onClick={() => {
           router.push("/");
@@ -22,7 +22,7 @@ function Header() {
           objectPosition="left"
         />
       </div>
-      <div className="flex items-center md:border-gray-200 md:border md:shadow-sm h-10 w-full">
+      <div className="flex items-center md:shadow-sm h-12 w-full border border-black-medium bg-black-superLight">
         <input
           onChange={(e) => {
             setSearchInput(e.target.value);
@@ -30,7 +30,7 @@ function Header() {
           value={searchInput}
           type="text"
           //   placeholder={placeholder ? placeholder : "Start your search"}
-          className="text-white flex-grow pl-5 bg-black outline-none text-lg placeholder-gray-500"
+          className="text-white flex-grow pl-5 bg-black-medium outline-none text-lg placeholder-gray-500 h-12 "
           placeholder="Search"
         />
         <SearchIcon className="h-11 py-2 cursor-pointer hidden md:inline-flex sticky md:mx-2 text-white" />

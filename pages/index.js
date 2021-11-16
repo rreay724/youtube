@@ -1,22 +1,24 @@
 import Head from "next/head";
-import { Header, Player } from "../components/index";
+import { Header, Player, Sidebar } from "../components/index";
 
 export default function Home({ data }) {
   return (
-    <div>
+    <div className=" bg-black-medium">
       <Head>
         <title>YouTube</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-
-      <main className="flex flex-col items-center justify-center w-full px-20 text-center">
-        <section>
-          {data.items?.map(({ id }) => (
-            <Player key={id} id={id} />
-          ))}
-        </section>
-      </main>
+      <div className="flex">
+        <Sidebar />
+        <main className="flex flex-col items-center justify-center w-full px-20 text-center">
+          <section>
+            {data.items?.map(({ id }) => (
+              <Player key={id} id={id} />
+            ))}
+          </section>
+        </main>
+      </div>
     </div>
   );
 }
