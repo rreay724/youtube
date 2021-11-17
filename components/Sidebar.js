@@ -1,18 +1,26 @@
+import { useRouter } from "next/dist/client/router";
 import {
   HomeIcon,
   CollectionIcon,
   SearchCircleIcon,
 } from "@heroicons/react/outline";
 import { AiOutlineCompass } from "react-icons/ai";
+import { route } from "next/dist/server/router";
 
 function Sidebar() {
+  const router = useRouter();
   return (
     <div
-      className="overflow-scroll pt-2 w-72 bg-black-light hidden sm:inline-flex md:inline-flex 
-    lg:inline-flex xl:inline-flex 2xl:inline-flex"
+      className="sticky pt-2 w-72 bg-black-light hidden sm:inline-flex md:inline-flex 
+    lg:inline-flex xl:inline-flex 2xl:inline-flex min-h-screen"
     >
       <div className="w-full">
-        <div className="sidebarComponent">
+        <div
+          onClick={() => {
+            router.push("/");
+          }}
+          className="sidebarComponent"
+        >
           <HomeIcon className="w-10 p-2" />
           <p className="pl-5 text-sm">Home</p>
         </div>
