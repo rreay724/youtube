@@ -9,6 +9,12 @@ function VideoThumbnail({
   channelTitle,
   thumbnailWidth,
   thumbnailHeight,
+  commentCount,
+  dislikeCount,
+  likeCount,
+  viewCount,
+  publishedAt,
+  embedHtml,
 }) {
   const router = useRouter();
 
@@ -19,10 +25,19 @@ function VideoThumbnail({
       onClick={() => {
         router.push({
           pathname: "/videoPage",
-          query: { id: id },
+          query: {
+            id: id,
+            title: title,
+            viewCount: viewCount,
+            commentCount: commentCount,
+            dislikeCount: dislikeCount,
+            likeCount: likeCount,
+            publishedAt: publishedAt,
+            embedHtml: embedHtml,
+          },
         });
       }}
-      className="w-full flex cursor-pointer"
+      className="w-full flex cursor-pointer hover:scale-105 transition duration-200 ease-out active:scale-90"
     >
       <div className="py-2">
         <Image

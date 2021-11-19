@@ -13,7 +13,7 @@ function Header() {
         onClick={() => {
           router.push("/");
         }}
-        className="relative flex items-center h-16 cursor-pointer my-auto"
+        className="relative flex items-center h-14 cursor-pointer my-auto"
       >
         <Image
           src="/YouTube-Logo.png"
@@ -24,7 +24,7 @@ function Header() {
           className=""
         />
       </div>
-      <div className="flex items-center md:shadow-sm h-12 w-full border border-black-medium bg-black-superLight">
+      <div className="flex items-center md:shadow-sm h-8 w-full border border-black-medium bg-black-superLight">
         <input
           onChange={(e) => {
             setSearchInput(e.target.value);
@@ -32,10 +32,10 @@ function Header() {
           value={searchInput}
           type="text"
           //   placeholder={placeholder ? placeholder : "Start your search"}
-          className="text-white flex-grow pl-5 bg-black-medium outline-none text-lg placeholder-gray-500 h-12 "
+          className="text-gray-300 flex-grow pl-5 bg-black-medium outline-none text-lg placeholder-gray-500 h-9 "
           placeholder="Search"
         />
-        <SearchIcon className="h-11 py-2 cursor-pointer hidden md:inline-flex sticky md:mx-2 text-white" />
+        <SearchIcon className="h-11 py-3 cursor-pointer hidden md:inline-flex sticky md:mx-2 text-white" />
       </div>
     </header>
   );

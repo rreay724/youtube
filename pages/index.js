@@ -1,6 +1,6 @@
 import Head from "next/head";
 
-import { Header, Player, Sidebar, VideoThumbnail } from "../components/index";
+import { Header, Sidebar, VideoThumbnail } from "../components/index";
 
 export default function Home({ data }) {
   console.log(data);
@@ -27,6 +27,12 @@ export default function Home({ data }) {
                 description={item.snippet.description}
                 channelTitle={item.snippet.channelTitle}
                 title={item.snippet.title}
+                commentCount={item.statistics.commentCount}
+                dislikeCount={item.statistics.dislikeCount}
+                likeCount={item.statistics.likeCount}
+                viewCount={item.statistics.viewCount}
+                publishedAt={item.snippet.publishedAt}
+                embedHtml={item.player.embedHtml}
               />
             ))}
           </section>
@@ -38,7 +44,8 @@ export default function Home({ data }) {
 
 export async function getServerSideProps() {
   const data = await fetch(
-    `https://youtube.googleapis.com/youtube/v3/videos?part=contentDetails&part=player&part=id&part=snippet&chart=mostPopular&maxResults=20&key=${process.env.NEXT_PUBLIC_API_KEY}`
+    `https://youtube.googleapis.com/youtube/v3/videos?&part=player&part=statistics&part=id&part=snippet&chart=mostPopular&maxResults=20&key=${process.env.NEXT_PUBLIC_API_KEY}`
+    // `https://youtube.googleapis.com/youtube/v3/videos?part=statistics&part=suggestions&part=snippet&part=id&prettyPrint=true&key=${process.env.NEXT_PUBLIC_API_KEY}`
   ).then((res) => res.json());
 
   return {
