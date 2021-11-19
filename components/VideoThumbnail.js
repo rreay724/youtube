@@ -37,7 +37,7 @@ function VideoThumbnail({
           },
         });
       }}
-      className="w-full flex cursor-pointer hover:scale-105 transition duration-200 ease-out active:scale-90"
+      className="w-full flex cursor-pointer  transition duration-200 ease-out active:bg-black-superLight"
     >
       <div className="py-2">
         <Image
