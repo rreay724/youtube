@@ -48,7 +48,8 @@ function VideoThumbnail({
       </div>
       <div className="text-left ml-4 mt-3">
         <h1 className="text-white text-lg">{title}</h1>
-        <p className="text-gray-400 text-xs pb-2">{channelTitle}</p>
+        <p className="text-gray-400 text-xs pt-1 pb-4">{viewCount} views · </p>
+        <p className="text-gray-400 text-xs pb-4">{channelTitle}</p>
         <p className="text-gray-400 text-xs">{descriptionSnippet}</p>
       </div>
     </div>
