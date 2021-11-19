@@ -1,3 +1,5 @@
+import { useState } from "react";
+import YouTube from "react-youtube";
 import { useRouter } from "next/dist/client/router";
 import { Header, Suggestions } from "../components/index";
 import {
@@ -14,19 +16,39 @@ function videoPage() {
     id,
     title,
     viewCount,
-    commentCount,
     dislikeCount,
     likeCount,
     publishedAt,
     embedHtml,
+    commentCount,
   } = router.query;
+  console.log("embedded", embedHtml);
+
+  const [liked, setLiked] = useState(false);
+  const [disliked, setDisliked] = useState(false);
   const date = new Date(publishedAt);
   const month = date.toString().split(" ")[1];
   const day = date.toString().split(" ")[2];
   const year = date.toString().split(" ")[3];
   const formattedViewCount = Number(viewCount).toLocaleString();
 
-  const handleLikeClick = () => {};
+  const handleLikeClick = () => {
+    if (liked === false) {
+      setLiked(true);
+      setDisliked(false);
+    } else if (liked === true) {
+      setLiked(false);
+    }
+  };
+
+  const handleDisikeClick = () => {
+    if (disliked === false) {
+      setDisliked(true);
+      setLiked(false);
+    } else if (disliked === true) {
+      setDisliked(false);
+    }
+  };
 
   // const formattedDate = format(date, "MMMM do, yyyy");
   return (
@@ -40,7 +62,7 @@ function videoPage() {
               dangerouslySetInnerHTML={{ __html: `${embedHtml}` }}
             />
           </div>
-          <div className="grid grid-cols-2">
+          <div className="grid grid-cols-2 h-24 pb-10  border-b border-gray-700">
             <div className="pt-4 text-left">
               <h2 className="text-white text-xl pb-3">{title}</h2>
               <p className="text-sm text-gray-400">
@@ -49,10 +71,33 @@ function videoPage() {
             </div>
             <div className="flex text-white items-end justify-end">
               <p className="flex text-sm font-semibold items-center">
-                <ThumbUpOutline className="w-8 pr-2" /> {likeCount}
+                {liked ? (
+                  <ThumbUpIcon
+                    onClick={handleLikeClick}
+                    className="w-8 pr-2 cursor-pointer"
+                  />
+                ) : (
+                  <ThumbUpOutline
+                    onClick={handleLikeClick}
+                    className="w-8 pr-2 cursor-pointer"
+                  />
+                )}
+
+                {likeCount}
               </p>
               <p className="flex pl-4 text-sm font-semibold items-center">
-                <ThumbDownOutline className="w-8 pr-2" /> {dislikeCount}
+                {disliked ? (
+                  <ThumbDownIcon
+                    onClick={handleDisikeClick}
+                    className="w-8 pr-2 cursor-pointer"
+                  />
+                ) : (
+                  <ThumbDownOutline
+                    onClick={handleDisikeClick}
+                    className="w-8 pr-2 cursor-pointer"
+                  />
+                )}
+                {dislikeCount}
               </p>
               <p className="flex pl-4 text-sm font-semibold items-center">
                 <ShareIcon className="w-8 pr-2" /> SHARE

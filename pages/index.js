@@ -45,7 +45,6 @@ export default function Home({ data }) {
 export async function getServerSideProps() {
   const data = await fetch(
     `https://youtube.googleapis.com/youtube/v3/videos?&part=player&part=statistics&part=id&part=snippet&chart=mostPopular&maxResults=20&key=${process.env.NEXT_PUBLIC_API_KEY}`
-    // `https://youtube.googleapis.com/youtube/v3/videos?part=statistics&part=suggestions&part=snippet&part=id&prettyPrint=true&key=${process.env.NEXT_PUBLIC_API_KEY}`
   ).then((res) => res.json());
 
   return {
