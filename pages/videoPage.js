@@ -1,11 +1,12 @@
 import { useRouter } from "next/dist/client/router";
 import { Header, Suggestions } from "../components/index";
 import {
-  ThumbUpIcon,
-  ThumbDownIcon,
+  ThumbUpIcon as ThumbUpOutline,
+  ThumbDownIcon as ThumbDownOutline,
   ShareIcon,
   SaveIcon,
 } from "@heroicons/react/outline";
+import { ThumbUpIcon, ThumbDownIcon } from "@heroicons/react/solid";
 
 function videoPage() {
   const router = useRouter();
@@ -24,6 +25,8 @@ function videoPage() {
   const day = date.toString().split(" ")[2];
   const year = date.toString().split(" ")[3];
   const formattedViewCount = Number(viewCount).toLocaleString();
+
+  const handleLikeClick = () => {};
 
   // const formattedDate = format(date, "MMMM do, yyyy");
   return (
@@ -46,10 +49,10 @@ function videoPage() {
             </div>
             <div className="flex text-white items-end justify-end">
               <p className="flex text-sm font-semibold items-center">
-                <ThumbUpIcon className="w-8 pr-2" /> {likeCount}
+                <ThumbUpOutline className="w-8 pr-2" /> {likeCount}
               </p>
               <p className="flex pl-4 text-sm font-semibold items-center">
-                <ThumbDownIcon className="w-8 pr-2" /> {dislikeCount}
+                <ThumbDownOutline className="w-8 pr-2" /> {dislikeCount}
               </p>
               <p className="flex pl-4 text-sm font-semibold items-center">
                 <ShareIcon className="w-8 pr-2" /> SHARE
