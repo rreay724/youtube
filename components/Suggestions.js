@@ -7,7 +7,7 @@ function Suggestions({ data }) {
   const titleSnippet = titleText.substring(0, 30) + "...";
   console.log("data from suggestions page", data);
   return (
-    <div className="w-96 min-h-screen ">
+    <div className="w-suggestionWidth min-h-screen ">
       <SuggestionsThumbnail
         title={titleSnippet}
         thumbnail="https://campaigndonut.com/wp-content/uploads/2019/05/justin-brown-youtub-thumbnails.jpg"
