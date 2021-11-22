@@ -9,6 +9,8 @@ import {
 } from "@heroicons/react/outline";
 import { ThumbUpIcon, ThumbDownIcon } from "@heroicons/react/solid";
 
+// Notes: needs description, subscriber counts, channel image, show more, show less for descrption, bell icon and subscribe button
+
 function videoPage({ data, comments }) {
   console.log("data", data);
   console.log("comments", comments);
@@ -129,7 +131,7 @@ export async function getServerSideProps(context) {
   ).then((res) => res.json());
 
   const comments = await fetch(
-    `https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet&key=${process.env.NEXT_PUBLIC_API_KEY}`
+    `https://youtube.googleapis.com/youtube/v3/commentThreads?id=${id}&part=snippet&part=id&key=${process.env.NEXT_PUBLIC_API_KEY}`
   ).then((res) => res.json());
 
   return {
