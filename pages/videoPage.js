@@ -1,5 +1,4 @@
 import { useState } from "react";
-import YouTube from "react-youtube";
 import { useRouter } from "next/dist/client/router";
 import { Header, Suggestions, Comments } from "../components/index";
 import {
@@ -10,8 +9,9 @@ import {
 } from "@heroicons/react/outline";
 import { ThumbUpIcon, ThumbDownIcon } from "@heroicons/react/solid";
 
-function videoPage({ data }) {
+function videoPage({ data, comments }) {
   console.log("data", data);
+  console.log("comments", comments);
   const router = useRouter();
 
   const {
@@ -53,7 +53,7 @@ function videoPage({ data }) {
 
   // const formattedDate = format(date, "MMMM do, yyyy");
   return (
-    <div className="bg-black-medium min-h-screen ">
+    <div className="bg-black-medium min-h-screen">
       <Header />
       <div className="flex">
         <main className="items-center justify-center w-full pl-5 pt-5 text-center overflow-scroll">
@@ -108,6 +108,10 @@ function videoPage({ data }) {
               </p>
             </div>
           </div>
+          <div className="pt-5">
+            <Comments />
+          </div>
+
           {/* <div className=" border-b border-gray-700 h-5" /> */}
         </main>
         <Suggestions data={data} />
@@ -124,9 +128,14 @@ export async function getServerSideProps(context) {
     `https://youtube.googleapis.com/youtube/v3/search?part=statistics&part=snippet&maxResults=25&relatedToVideoId=${id}&type=video&key=${process.env.NEXT_PUBLIC_API_KEY}`
   ).then((res) => res.json());
 
+  const comments = await fetch(
+    `https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet&key=${process.env.NEXT_PUBLIC_API_KEY}`
+  ).then((res) => res.json());
+
   return {
     props: {
       data,
+      comments,
     },
   };
 }
