@@ -1,6 +1,6 @@
 function Comments() {
   return (
-    <div className="min-h-6/12 text-left border-t">
+    <div className="min-h-6/12 text-left border-t border-gray-700">
       <div className="flex pt-5">
         <h2 className="text-white font-semibold text-sm">User name</h2>
         <p className="text-gray-400 text-xs pl-2 pt-0.5">3 months ago</p>
