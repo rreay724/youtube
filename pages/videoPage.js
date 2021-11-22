@@ -1,7 +1,7 @@
 import { useState } from "react";
 import YouTube from "react-youtube";
 import { useRouter } from "next/dist/client/router";
-import { Header, Suggestions } from "../components/index";
+import { Header, Suggestions, Comments } from "../components/index";
 import {
   ThumbUpIcon as ThumbUpOutline,
   ThumbDownIcon as ThumbDownOutline,
@@ -10,8 +10,10 @@ import {
 } from "@heroicons/react/outline";
 import { ThumbUpIcon, ThumbDownIcon } from "@heroicons/react/solid";
 
-function videoPage() {
+function videoPage({ data }) {
+  console.log("data", data);
   const router = useRouter();
+
   const {
     id,
     title,
@@ -22,7 +24,6 @@ function videoPage() {
     embedHtml,
     commentCount,
   } = router.query;
-  console.log("embedded", embedHtml);
 
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
@@ -54,7 +55,7 @@ function videoPage() {
   return (
     <div className="bg-black-medium min-h-screen ">
       <Header />
-      <div className="flex ">
+      <div className="flex">
         <main className="items-center justify-center w-full pl-5 pt-5 text-center overflow-scroll">
           <div>
             <div
@@ -62,9 +63,9 @@ function videoPage() {
               dangerouslySetInnerHTML={{ __html: `${embedHtml}` }}
             />
           </div>
-          <div className="grid grid-cols-2 h-24 pb-10  border-b border-gray-700">
+          <div className="grid grid-cols-2 h-24 pb-20 ">
             <div className="pt-4 text-left">
-              <h2 className="text-white text-xl pb-3">{title}</h2>
+              <h2 className="text-white text-xl pb-3 w-full">{title}</h2>
               <p className="text-sm text-gray-400">
                 {formattedViewCount} views · {month + " " + day + ", " + year}
               </p>
@@ -99,19 +100,33 @@ function videoPage() {
                 )}
                 {dislikeCount}
               </p>
-              <p className="flex pl-4 text-sm font-semibold items-center">
+              <p className="flex pl-4 text-sm font-semibold items-center cursor-pointer">
                 <ShareIcon className="w-8 pr-2" /> SHARE
               </p>
-              <p className="flex pl-4 text-sm font-semibold items-center">
+              <p className="flex pl-4 text-sm font-semibold items-center cursor-pointer">
                 <SaveIcon className="w-8 pr-2 item-top" /> SAVE
               </p>
             </div>
           </div>
+          {/* <div className=" border-b border-gray-700 h-5" /> */}
         </main>
-        <Suggestions />
+        <Suggestions data={data} />
       </div>
     </div>
   );
 }
 
 export default videoPage;
+
+export async function getServerSideProps(context) {
+  const { id } = context.query;
+  const data = await fetch(
+    `https://youtube.googleapis.com/youtube/v3/search?part=statistics&part=snippet&maxResults=25&relatedToVideoId=${id}&type=video&key=${process.env.NEXT_PUBLIC_API_KEY}`
+  ).then((res) => res.json());
+
+  return {
+    props: {
+      data,
+    },
+  };
+}

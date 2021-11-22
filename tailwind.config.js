@@ -9,6 +9,7 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      width: { suggestionWidth: "200px" },
       colors: {
         black: {
           superDuperLight: "#707070",

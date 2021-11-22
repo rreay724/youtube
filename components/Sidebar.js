@@ -5,7 +5,6 @@ import {
   SearchCircleIcon,
 } from "@heroicons/react/outline";
 import { AiOutlineCompass } from "react-icons/ai";
-import { route } from "next/dist/server/router";
 
 function Sidebar() {
   const router = useRouter();

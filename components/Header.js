@@ -17,11 +17,10 @@ function Header() {
       >
         <Image
           src="/YouTube-Logo.png"
-          width={100}
-          height={40}
+          width={90}
+          height={30}
           objectFit="contain"
           objectPosition="left"
-          className=""
         />
       </div>
       <div className="flex items-center md:shadow-sm h-8 w-full border border-black-medium bg-black-superLight">
