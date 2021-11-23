@@ -12,8 +12,6 @@ import { ThumbUpIcon, ThumbDownIcon } from "@heroicons/react/solid";
 // Notes: needs description, subscriber counts, channel image, show more, show less for descrption, bell icon and subscribe button
 
 function videoPage({ data, comments }) {
-  console.log("data", data);
-  console.log("comments", comments);
   const router = useRouter();
 
   const {
@@ -127,17 +125,17 @@ export default videoPage;
 
 export async function getServerSideProps(context) {
   const { id } = context.query;
-  // const data = await fetch(
-  //   `https://youtube.googleapis.com/youtube/v3/search?relatedToVideoId=${id}&part=statistics&part=snippet&maxResults=25&type=video&key=${process.env.NEXT_PUBLIC_API_KEY}`
-  // ).then((res) => res.json());
+  const data = await fetch(
+    `https://youtube.googleapis.com/youtube/v3/search?relatedToVideoId=${id}&part=id&part=snippet&maxResults=50&type=video&key=${process.env.NEXT_PUBLIC_API_KEY}`
+  ).then((res) => res.json());
 
   const comments = await fetch(
-    `https://youtube.googleapis.com/youtube/v3/commentThreads?videoId=${id}&part=snippet&part=id&key=${process.env.NEXT_PUBLIC_API_KEY}`
+    `https://youtube.googleapis.com/youtube/v3/commentThreads?videoId=${id}&maxResults=50&part=snippet&part=id&key=${process.env.NEXT_PUBLIC_API_KEY}`
   ).then((res) => res.json());
 
   return {
     props: {
-      // data,
+      data,
       comments,
     },
   };
