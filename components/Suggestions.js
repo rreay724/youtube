@@ -2,9 +2,7 @@ import { useRouter } from "next/dist/client/router";
 import { SuggestionsThumbnail } from "../components/index";
 
 function Suggestions({ data }) {
-  data.items.map((item) => {
-    console.log(item.snippet.title);
-  });
+  console.log("suggestions", data);
   console.log("data suggestions: ", data);
   const titleText =
     "test text hello hyeeeeh fdslahfdsahfliudhaklfdhslkajfdhsalfhdahfdjkhazljfhdljahfjkahdfklh";
@@ -21,6 +19,7 @@ function Suggestions({ data }) {
         ? data.items.map((item) => (
             <SuggestionsThumbnail
               key={item.id.videoId}
+              id={item.id.videoId}
               title={item.snippet.title}
               thumbnail={item.snippet?.thumbnails.medium.url}
               channelTitle={item.snippet?.channelTitle}

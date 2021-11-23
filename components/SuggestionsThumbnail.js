@@ -1,6 +1,8 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useRouter } from "next/dist/client/router";
+
 function SuggestionsThumbnail({
+  id,
   title,
   thumbnail,
   thumbnailWidth,
@@ -9,9 +11,20 @@ function SuggestionsThumbnail({
   viewCount,
 }) {
   const titleSnippet = title.substring(0, 50) + "...";
+  const router = useRouter();
 
   return (
-    <div className="flex pl-5 pt-5 cursor-pointer">
+    <div
+      className="flex pl-5 pt-5 cursor-pointer"
+      onClick={() => {
+        router.push({
+          pathname: "/suggestedVideoPage",
+          query: {
+            id: id,
+          },
+        });
+      }}
+    >
       <div className="w-52">
         <Image src={thumbnail} width={190} height={116} />
       </div>
