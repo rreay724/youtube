@@ -6,6 +6,7 @@ module.exports = {
       "www.pikpng.com",
       "i.ytimg.com",
       "campaigndonut.com",
+      "yt3.ggpht.com",
     ],
   },
 };

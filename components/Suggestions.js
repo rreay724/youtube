@@ -2,10 +2,10 @@ import { useRouter } from "next/dist/client/router";
 import { SuggestionsThumbnail } from "../components/index";
 
 function Suggestions({ data }) {
+  console.log("data suggestions: ", data);
   const titleText =
     "test text hello hyeeeeh fdslahfdsahfliudhaklfdhslkajfdhsalfhdahfdjkhazljfhdljahfjkahdfklh";
   const titleSnippet = titleText.substring(0, 30) + "...";
-  console.log("data from suggestions page", data);
   return (
     <div className="w-suggestionWidth min-h-screen pr-10 hidden md:inline-flex lg:inline-flex xl:inline-flex 2xl:inline-flex">
       <SuggestionsThumbnail

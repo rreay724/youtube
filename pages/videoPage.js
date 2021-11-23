@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/dist/client/router";
-import { Header, Suggestions, Comments } from "../components/index";
+import { Header, Suggestions, CommentSection } from "../components/index";
 import {
   ThumbUpIcon as ThumbUpOutline,
   ThumbDownIcon as ThumbDownOutline,
@@ -26,6 +26,7 @@ function videoPage({ data, comments }) {
     embedHtml,
     commentCount,
   } = router.query;
+  console.log("id", id);
 
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
@@ -111,7 +112,7 @@ function videoPage({ data, comments }) {
             </div>
           </div>
           <div className="pt-5">
-            <Comments />
+            <CommentSection comments={comments} />
           </div>
 
           {/* <div className=" border-b border-gray-700 h-5" /> */}
@@ -126,17 +127,17 @@ export default videoPage;
 
 export async function getServerSideProps(context) {
   const { id } = context.query;
-  const data = await fetch(
-    `https://youtube.googleapis.com/youtube/v3/search?part=statistics&part=snippet&maxResults=25&relatedToVideoId=${id}&type=video&key=${process.env.NEXT_PUBLIC_API_KEY}`
-  ).then((res) => res.json());
+  // const data = await fetch(
+  //   `https://youtube.googleapis.com/youtube/v3/search?relatedToVideoId=${id}&part=statistics&part=snippet&maxResults=25&type=video&key=${process.env.NEXT_PUBLIC_API_KEY}`
+  // ).then((res) => res.json());
 
   const comments = await fetch(
-    `https://youtube.googleapis.com/youtube/v3/commentThreads?id=${id}&part=snippet&part=id&key=${process.env.NEXT_PUBLIC_API_KEY}`
+    `https://youtube.googleapis.com/youtube/v3/commentThreads?videoId=${id}&part=snippet&part=id&key=${process.env.NEXT_PUBLIC_API_KEY}`
   ).then((res) => res.json());
 
   return {
     props: {
-      data,
+      // data,
       comments,
     },
   };

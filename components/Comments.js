@@ -1,12 +1,18 @@
 import { useState } from "react";
-
+import Image from "next/image";
 import {
   ThumbUpIcon as ThumbUpOutline,
   ThumbDownIcon as ThumbDownOutline,
 } from "@heroicons/react/outline";
 import { ThumbUpIcon, ThumbDownIcon } from "@heroicons/react/solid";
 
-function Comments() {
+function Comments({
+  profileImageUrl,
+  authorDisplayName,
+  likeCount,
+  publishedAt,
+  textDisplay,
+}) {
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
 
@@ -28,46 +34,62 @@ function Comments() {
     }
   };
   return (
-    <div className="min-h-6/12 text-left border-t border-gray-700 pt-5">
-      <h2 className="text-white font-semibold pb-5">1,495 Comments</h2>
-      <div className="flex items-center pb-2">
-        <h2 className="text-white font-semibold text-sm">User name</h2>
-        <p className="text-gray-400 text-xs pl-2 pt-0.5">3 months ago</p>
+    <div className="text-left py-3 flex">
+      <div>
+        <Image
+          src={profileImageUrl}
+          width={35}
+          height={35}
+          className="rounded-full items-center"
+        />
       </div>
-      <p className="text-white text-sm">
-        This is the comment that will be in there you stupid butt butt
-      </p>
-      <div className="flex">
-        <div className="pt-3 flex">
-          {liked ? (
-            <ThumbUpIcon
-              className="w-5 text-white cursor-pointer"
-              onClick={handleLikeClick}
-            />
-          ) : (
-            <ThumbUpOutline
-              className="w-5 text-white cursor-pointer"
-              onClick={handleLikeClick}
-            />
-          )}
-          <p className="text-gray-400 text-xs flex items-center pl-2">3.5k</p>
+      <div>
+        <div className="flex pl-5">
+          <div>
+            <div className="flex items-center pb-2">
+              <h2 className="text-white font-semibold text-sm">
+                {authorDisplayName}
+              </h2>
+              <p className="text-gray-400 text-xs pl-2 pt-0.5">{publishedAt}</p>
+            </div>
+            <p className="text-white text-sm">{textDisplay}</p>
+          </div>
         </div>
-        <div className="pt-3 pl-4">
-          {disliked ? (
-            <ThumbDownIcon
-              className="w-5 text-white cursor-pointer"
-              onClick={handleDisikeClick}
-            />
-          ) : (
-            <ThumbDownOutline
-              className="w-5 text-white cursor-pointer"
-              onClick={handleDisikeClick}
-            />
-          )}
+
+        <div className="flex pl-5">
+          <div className="pt-3 flex">
+            {liked ? (
+              <ThumbUpIcon
+                className="w-5 text-white cursor-pointer"
+                onClick={handleLikeClick}
+              />
+            ) : (
+              <ThumbUpOutline
+                className="w-5 text-white cursor-pointer"
+                onClick={handleLikeClick}
+              />
+            )}
+            <p className="text-gray-400 text-xs flex items-center pl-2">
+              {likeCount}
+            </p>
+          </div>
+          <div className="pt-3 pl-4">
+            {disliked ? (
+              <ThumbDownIcon
+                className="w-5 text-white cursor-pointer"
+                onClick={handleDisikeClick}
+              />
+            ) : (
+              <ThumbDownOutline
+                className="w-5 text-white cursor-pointer"
+                onClick={handleDisikeClick}
+              />
+            )}
+          </div>
+          <p className="items-bottom pt-3 pl-4 text-gray-400 text-xs cursor-pointer">
+            REPLY
+          </p>
         </div>
-        <p className="items-bottom pt-3 pl-4 text-gray-400 text-xs cursor-pointer">
-          REPLY
-        </p>
       </div>
     </div>
   );
