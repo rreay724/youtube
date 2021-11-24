@@ -10,8 +10,6 @@ function SuggestionsThumbnail({
   channelTitle,
   viewCount,
 }) {
-  console.log("Title", title);
-
   // const titleSnippet = "";
   // title !== null && titleSnippet === title.substring(0, 50) + "...";
   const router = useRouter();

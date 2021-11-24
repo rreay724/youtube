@@ -1,7 +1,6 @@
 import { Comments } from "./index";
 
 function CommentSection({ comments }) {
-  console.log(comments);
   return (
     <div className="min-h-6/12 border-t border-gray-700 pt-5 text-left">
       <h2 className="text-white font-semibold pb-5">1,495 Comments</h2>

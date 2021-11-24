@@ -1,8 +1,6 @@
 import { SuggestionsThumbnail } from "../components/index";
 
 function Suggestions({ data }) {
-  console.log("data suggestions: ", data);
-
   return (
     <div className="w-suggestionWidth min-h-screen pr-10">
       {data

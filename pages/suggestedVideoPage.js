@@ -12,7 +12,6 @@ import { ThumbUpIcon, ThumbDownIcon } from "@heroicons/react/solid";
 // Notes: needs description, subscriber counts, channel image, show more, show less for descrption, bell icon and subscribe button
 
 function suggestedVideoPage({ data, comments, suggested }) {
-  console.log("DATA", data);
   const router = useRouter();
 
   const { id } = router.query;
