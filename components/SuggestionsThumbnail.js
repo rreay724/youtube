@@ -10,7 +10,10 @@ function SuggestionsThumbnail({
   channelTitle,
   viewCount,
 }) {
-  const titleSnippet = title.substring(0, 50) + "...";
+  console.log("Title", title);
+
+  // const titleSnippet = "";
+  // title !== null && titleSnippet === title.substring(0, 50) + "...";
   const router = useRouter();
 
   return (
@@ -26,10 +29,10 @@ function SuggestionsThumbnail({
       }}
     >
       <div className="w-52">
-        <Image src={thumbnail} width={190} height={116} />
+        {thumbnail ? <Image src={thumbnail} width={190} height={116} /> : null}
       </div>
       <div className="pl-2">
-        <h2 className="text-white overflow-x-auto">{titleSnippet}</h2>
+        <h2 className="text-white overflow-x-auto">{title}</h2>
         <div className="pt-1">
           <p className="text-xs text-gray-400">{channelTitle}</p>
           {/* <p className="text-xs text-gray-400">{viewCount} views</p> */}

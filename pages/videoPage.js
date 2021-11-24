@@ -24,7 +24,6 @@ function videoPage({ data, comments }) {
     embedHtml,
     commentCount,
   } = router.query;
-  console.log("id", id);
 
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);

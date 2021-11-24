@@ -12,19 +12,19 @@ import { ThumbUpIcon, ThumbDownIcon } from "@heroicons/react/solid";
 // Notes: needs description, subscriber counts, channel image, show more, show less for descrption, bell icon and subscribe button
 
 function suggestedVideoPage({ data, comments, suggested }) {
+  console.log("DATA", data);
   const router = useRouter();
 
   const { id } = router.query;
-  console.log("id", id);
 
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
-  const date = new Date(data.item[0]?.snippet.publishedAt);
+  const date = new Date(data.items[0]?.snippet.publishedAt);
   const month = date.toString().split(" ")[1];
   const day = date.toString().split(" ")[2];
   const year = date.toString().split(" ")[3];
   const formattedViewCount = Number(
-    data.item[0]?.statistics.viewCount
+    data.items[0]?.statistics.viewCount
   ).toLocaleString();
 
   const handleLikeClick = () => {
@@ -55,14 +55,14 @@ function suggestedVideoPage({ data, comments, suggested }) {
             <div
               className="aspect-w-14 aspect-h-7"
               dangerouslySetInnerHTML={{
-                __html: `${data.item[0]?.player.embedHtml}`,
+                __html: `${data.items[0]?.player.embedHtml}`,
               }}
             />
           </div>
           <div className="grid grid-cols-2 h-24 pb-20 ">
             <div className="pt-4 text-left">
               <h2 className="text-white text-xl pb-3 w-full">
-                {data.item[0]?.snippet.title}
+                {data.items[0]?.snippet.title}
               </h2>
               <p className="text-sm text-gray-400">
                 {formattedViewCount} views · {month + " " + day + ", " + year}
@@ -82,7 +82,7 @@ function suggestedVideoPage({ data, comments, suggested }) {
                   />
                 )}
 
-                {data.item[0]?.statistics.likeCount}
+                {data.items[0]?.statistics.likeCount}
               </p>
               <p className="flex pl-4 text-sm font-semibold items-center">
                 {disliked ? (
@@ -96,7 +96,7 @@ function suggestedVideoPage({ data, comments, suggested }) {
                     className="w-8 pr-2 cursor-pointer"
                   />
                 )}
-                {data.item[0]?.statistics.dislikeCount}
+                {data.items[0]?.statistics.dislikeCount}
               </p>
               <p className="flex pl-4 text-sm font-semibold items-center cursor-pointer">
                 <ShareIcon className="w-8 pr-2" /> SHARE
