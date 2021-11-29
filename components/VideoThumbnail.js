@@ -17,8 +17,11 @@ function VideoThumbnail({
   embedHtml,
 }) {
   const router = useRouter();
-
   const descriptionSnippet = description.substring(0, 150) + "...";
+  const date = new Date(publishedAt);
+  const month = date.toString().split(" ")[1];
+  const day = date.toString().split(" ")[2];
+  const year = date.toString().split(" ")[3];
 
   return (
     <div
@@ -37,7 +40,7 @@ function VideoThumbnail({
           },
         });
       }}
-      className="w-full flex cursor-pointer  transition duration-200 ease-out active:bg-black-superLight"
+      className="flex cursor-pointer transition duration-200 ease-out active:bg-black-superLight"
     >
       <div className="py-2">
         <Image
@@ -46,11 +49,15 @@ function VideoThumbnail({
           height={thumbnailHeight}
         />
       </div>
-      <div className="text-left ml-4 mt-3">
+      <div className="text-left ml-4 mt-3 w-8/12 ">
         <h1 className="text-white text-lg">{title}</h1>
-        <p className="text-gray-400 text-xs pt-1 pb-4">{viewCount} views · </p>
-        <p className="text-gray-400 text-xs pb-4">{channelTitle}</p>
-        <p className="text-gray-400 text-xs">{descriptionSnippet}</p>
+        <p className="text-gray-400 text-xs pt-1">
+          {channelTitle} · {viewCount} views · {month + " " + day + ", " + year}
+        </p>
+        <p className="text-gray-400 text-xs pb-4"></p>
+        <p className="text-gray-400 text-xs overflow-auto">
+          {descriptionSnippet}
+        </p>
       </div>
     </div>
   );

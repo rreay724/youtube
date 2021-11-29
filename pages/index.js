@@ -28,7 +28,7 @@ export default function Home({ data }) {
                 commentCount={item.statistics.commentCount}
                 dislikeCount={item.statistics.dislikeCount}
                 likeCount={item.statistics.likeCount}
-                viewCount={item.statistics.viewCount}
+                viewCount={Number(item.statistics.viewCount).toLocaleString()}
                 publishedAt={item.snippet.publishedAt}
                 embedHtml={item.player.embedHtml}
               />
