@@ -25,8 +25,6 @@ function videoPage({ data, comments }) {
     commentCount,
   } = router.query;
 
-  console.log("ID FROM VIDEO PAGE ", id);
-
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
   const date = new Date(publishedAt);

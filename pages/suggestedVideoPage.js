@@ -49,7 +49,7 @@ function suggestedVideoPage({ data, comments, suggested }) {
     <div className="bg-black-medium min-h-screen">
       <Header />
       <div className="flex">
-        <main className="items-center justify-center w-full pl-5 pt-5 text-center overflow-scroll">
+        <main className="items-center justify-center w-full pl-5 pt-5 text-center overflow-scroll scrollbar-hide scrollbar-hide">
           <div>
             <div
               className="aspect-w-14 aspect-h-7"
