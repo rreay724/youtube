@@ -20,19 +20,25 @@ export default function searchPage({ data }) {
 
         <main className="items-center justify-center w-full px-10 md:px-20 text-center overflow-y-scroll sm:ml-20 md:ml-10 lg:ml-16 xl:ml-56">
           <section className="mt-5 lg:mt-10">
-            {data.items?.map((item) => (
-              <SearchThumbnail
-                key={item.id.videoId}
-                id={item.id.videoId}
-                thumbnail={item.snippet.thumbnails.medium.url}
-                thumbnailWidth={item.snippet.thumbnails.medium.width}
-                thumbnailHeight={item.snippet.thumbnails.medium.height}
-                description={item.snippet.description}
-                channelTitle={item.snippet.channelTitle}
-                title={item.snippet.title}
-                publishedAt={item.snippet.publishedAt}
-              />
-            ))}
+            {!data.error ? (
+              data.items?.map((item) => (
+                <SearchThumbnail
+                  key={item.id.videoId}
+                  id={item.id.videoId}
+                  thumbnail={item.snippet.thumbnails.medium.url}
+                  thumbnailWidth={item.snippet.thumbnails.medium.width}
+                  thumbnailHeight={item.snippet.thumbnails.medium.height}
+                  description={item.snippet.description}
+                  channelTitle={item.snippet.channelTitle}
+                  title={item.snippet.title}
+                  publishedAt={item.snippet.publishedAt}
+                />
+              ))
+            ) : (
+              <p className="text-white">
+                API Limit Reached. Cannot retrieve videos.
+              </p>
+            )}
           </section>
         </main>
       </div>
