@@ -17,8 +17,6 @@ function searchVideoPage({ data, comments, searchVideo }) {
   const { id, title, viewCount, dislikeCount, likeCount, publishedAt } =
     router.query;
 
-  console.log("SEARCH VIDEO ", searchVideo);
-
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
   const date = new Date(publishedAt);

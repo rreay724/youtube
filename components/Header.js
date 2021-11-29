@@ -14,7 +14,6 @@ function Header() {
         searchInput: searchInput,
       },
     });
-    console.log(searchInput);
   };
 
   return (
