@@ -2,7 +2,7 @@ import { SuggestionsThumbnail } from "../components/index";
 
 function Suggestions({ data }) {
   return (
-    <div className="w-suggestionWidth min-h-screen pr-10">
+    <div className="w-suggestionWidth min-h-screen pr-10 hidden lg:inline-block">
       {data
         ? data.items.map((item) => (
             <SuggestionsThumbnail
