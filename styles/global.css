@@ -7,3 +7,9 @@
     @apply text-gray-300 px-4 flex items-center hover:bg-black-superLight cursor-pointer py-1 mr-4 active:bg-black-superDuperLight;
   }
 }
+
+@layer components {
+  .smallSidebarComponent {
+    @apply text-gray-300 text-center hover:bg-black-superLight cursor-pointer py-1 active:bg-black-superDuperLight;
+  }
+}

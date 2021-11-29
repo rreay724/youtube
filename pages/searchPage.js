@@ -18,8 +18,8 @@ export default function searchPage({ data }) {
       <div className="flex">
         <Sidebar />
 
-        <main className="items-center justify-center w-full px-20 text-center overflow-scroll">
-          <section className="mt-10">
+        <main className="items-center justify-center w-full px-10 md:px-20 text-center overflow-y-scroll ml-10 sm:ml-20 md:ml-10 lg:ml-16 xl:ml-56">
+          <section className="mt-5 lg:mt-10">
             {data.items?.map((item) => (
               <SearchThumbnail
                 key={item.id.videoId}

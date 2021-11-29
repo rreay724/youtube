@@ -34,10 +34,14 @@ function SearchThumbnail({
           height={thumbnailHeight}
         />
       </div>
-      <div className="text-left ml-4 mt-3">
-        <h1 className="text-white text-lg">{title}</h1>
-        <p className="text-gray-400 text-xs pb-4">{channelTitle}</p>
-        <p className="text-gray-400 text-xs">{descriptionSnippet}</p>
+      <div className="text-left ml-2 md:ml-4 mt-3 md:w-8/12 w-12/12">
+        <h1 className="text-white text-mobileXs md:text-lg">{title}</h1>
+        <p className="text-gray-400 text-mobileXs md:text-xs  pb-4">
+          {channelTitle}
+        </p>
+        <p className="text-gray-400 text-mobileXs md:text-xs ">
+          {descriptionSnippet}
+        </p>
       </div>
     </div>
   );
