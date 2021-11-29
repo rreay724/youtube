@@ -18,12 +18,12 @@ function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 grid grid-cols-3 bg-black-light md:pl-6 items-center">
+    <header className="sticky top-0 z-50 grid grid-cols-3 bg-black-light  items-center">
       <div
         onClick={() => {
           router.push("/");
         }}
-        className="relative flex items-center h-14 cursor-pointer my-auto"
+        className="relative flex items-center h-14 cursor-pointer my-auto pl-6"
       >
         <Image
           src="/YouTube-Logo.png"

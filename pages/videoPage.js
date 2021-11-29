@@ -58,21 +58,21 @@ function videoPage({ data, comments }) {
     <div className="bg-black-medium min-h-screen">
       <Header />
       <div className="flex">
-        <main className="items-center justify-center w-full pl-5 pt-5 text-center overflow-scroll">
+        <main className="items-center justify-center w-full pl-5 pr-5 lg:pr-0 pt-5 text-center overflow-scroll">
           <div>
             <div
               className="aspect-w-14 aspect-h-7"
               dangerouslySetInnerHTML={{ __html: `${embedHtml}` }}
             />
           </div>
-          <div className="grid grid-cols-2 h-24 pb-20 ">
+          <div className="grid grid-cols-2 h-24 pb-10 lg:pb-20 text-mobileSm">
             <div className="pt-4 text-left">
-              <h2 className="text-white text-xl pb-3 w-full">{title}</h2>
-              <p className="text-sm text-gray-400">
+              <h2 className="text-white sm:text-xl pb-3 w-full">{title}</h2>
+              <p className="sm:text-sm text-gray-400">
                 {formattedViewCount} views · {month + " " + day + ", " + year}
               </p>
             </div>
-            <div className="flex text-white items-end justify-end">
+            <div className="flex text-white items-end justify-end mr-10 lg:mr-0">
               <p className="flex text-sm font-semibold items-center">
                 {liked ? (
                   <ThumbUpIcon
@@ -110,7 +110,7 @@ function videoPage({ data, comments }) {
               </p>
             </div>
           </div>
-          <div className="pt-5">
+          <div className="sm:pt-5">
             <CommentSection comments={comments} />
           </div>
 
