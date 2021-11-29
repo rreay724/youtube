@@ -11,21 +11,13 @@ import { ThumbUpIcon, ThumbDownIcon } from "@heroicons/react/solid";
 
 // Notes: needs description, subscriber counts, channel image, show more, show less for descrption, bell icon and subscribe button
 
-function videoPage({ data, comments }) {
+function searchVideoPage({ data, comments, searchVideo }) {
   const router = useRouter();
 
-  const {
-    id,
-    title,
-    viewCount,
-    dislikeCount,
-    likeCount,
-    publishedAt,
-    embedHtml,
-    commentCount,
-  } = router.query;
+  const { id, title, viewCount, dislikeCount, likeCount, publishedAt } =
+    router.query;
 
-  console.log("ID FROM VIDEO PAGE ", id);
+  console.log("SEARCH VIDEO ", searchVideo);
 
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
@@ -33,7 +25,9 @@ function videoPage({ data, comments }) {
   const month = date.toString().split(" ")[1];
   const day = date.toString().split(" ")[2];
   const year = date.toString().split(" ")[3];
-  const formattedViewCount = Number(viewCount).toLocaleString();
+  const formattedViewCount = Number(
+    searchVideo.items[0]?.statistics.viewCount
+  ).toLocaleString();
 
   const handleLikeClick = () => {
     if (liked === false) {
@@ -62,12 +56,16 @@ function videoPage({ data, comments }) {
           <div>
             <div
               className="aspect-w-14 aspect-h-7"
-              dangerouslySetInnerHTML={{ __html: `${embedHtml}` }}
+              dangerouslySetInnerHTML={{
+                __html: `${searchVideo.items[0]?.player.embedHtml}`,
+              }}
             />
           </div>
           <div className="grid grid-cols-2 h-24 pb-20 ">
             <div className="pt-4 text-left">
-              <h2 className="text-white text-xl pb-3 w-full">{title}</h2>
+              <h2 className="text-white text-xl pb-3 w-full">
+                {searchVideo.items[0]?.snippet.title}
+              </h2>
               <p className="text-sm text-gray-400">
                 {formattedViewCount} views · {month + " " + day + ", " + year}
               </p>
@@ -86,7 +84,7 @@ function videoPage({ data, comments }) {
                   />
                 )}
 
-                {likeCount}
+                {searchVideo.items[0]?.statistics.likeCount}
               </p>
               <p className="flex pl-4 text-sm font-semibold items-center">
                 {disliked ? (
@@ -100,7 +98,7 @@ function videoPage({ data, comments }) {
                     className="w-8 pr-2 cursor-pointer"
                   />
                 )}
-                {dislikeCount}
+                {searchVideo.items[0]?.statistics.dislikeCount}
               </p>
               <p className="flex pl-4 text-sm font-semibold items-center cursor-pointer">
                 <ShareIcon className="w-8 pr-2" /> SHARE
@@ -122,7 +120,7 @@ function videoPage({ data, comments }) {
   );
 }
 
-export default videoPage;
+export default searchVideoPage;
 
 export async function getServerSideProps(context) {
   const { id } = context.query;
@@ -134,10 +132,15 @@ export async function getServerSideProps(context) {
     `https://youtube.googleapis.com/youtube/v3/commentThreads?videoId=${id}&maxResults=50&part=snippet&part=id&key=${process.env.NEXT_PUBLIC_API_KEY}`
   ).then((res) => res.json());
 
+  const searchVideo = await fetch(
+    `https://youtube.googleapis.com/youtube/v3/videos?part=snippet&part=statistics&part=player&id=${id}&key=${process.env.NEXT_PUBLIC_API_KEY}`
+  ).then((res) => res.json());
+
   return {
     props: {
       data,
       comments,
+      searchVideo,
     },
   };
 }

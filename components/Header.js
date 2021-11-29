@@ -7,6 +7,16 @@ function Header() {
   const router = useRouter();
   const [searchInput, setSearchInput] = useState("");
 
+  const handleSearch = () => {
+    router.push({
+      pathname: "/searchPage",
+      query: {
+        searchInput: searchInput,
+      },
+    });
+    console.log(searchInput);
+  };
+
   return (
     <header className="sticky top-0 z-50 grid grid-cols-3 bg-black-light md:pl-6 items-center">
       <div
@@ -33,8 +43,17 @@ function Header() {
           //   placeholder={placeholder ? placeholder : "Start your search"}
           className="text-gray-300 flex-grow pl-5 bg-black-medium outline-none text-lg placeholder-gray-500 h-9 "
           placeholder="Search"
+          onKeyDown={(e) => {
+            if (e.code === "Enter") {
+              e.preventDefault();
+              handleSearch();
+            }
+          }}
         />
-        <SearchIcon className="h-11 py-3 cursor-pointer hidden md:inline-flex sticky md:mx-2 text-white" />
+        <SearchIcon
+          className="h-11 py-3 cursor-pointer hidden md:inline-flex sticky md:mx-2 text-white"
+          onClick={handleSearch}
+        />
       </div>
     </header>
   );
