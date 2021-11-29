@@ -23,7 +23,7 @@ function Header() {
         onClick={() => {
           router.push("/");
         }}
-        className="relative flex items-center h-14 cursor-pointer my-auto"
+        className="relative flex items-center h-14 cursor-pointer my-auto pl-2 md:pl-0"
       >
         <Image
           src="/YouTube-Logo.png"

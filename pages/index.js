@@ -13,8 +13,8 @@ export default function Home({ data }) {
       <div className="flex">
         <Sidebar />
 
-        <main className="items-center justify-center w-full px-20 text-center overflow-scroll">
-          <section className="mt-10">
+        <main className="items-center justify-center w-full px-10 md:px-20 text-center overflow-scroll">
+          <section className="mt-5 md:mt-10">
             {data.items?.map((item) => (
               <VideoThumbnail
                 key={item.id}
