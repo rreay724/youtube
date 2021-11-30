@@ -26,6 +26,20 @@ function suggestedVideoPage({ data, comments, suggested }) {
     data.items[0]?.statistics.viewCount
   ).toLocaleString();
 
+  let viewInt = parseInt(
+    data.items[0]?.statistics.viewCount.replaceAll(",", "")
+  );
+
+  const numFormatter = (num) => {
+    if (num > 999 && num < 1000000) {
+      return (num / 1000).toFixed(1) + "K"; // convert to K for number from > 1000 < 1 million
+    } else if (num > 1000000) {
+      return (num / 1000000).toFixed(1) + "M"; // convert to M for number from > 1 million
+    } else if (num < 900) {
+      return num; // if value < 1000, nothing to do
+    }
+  };
+
   const handleLikeClick = () => {
     if (liked === false) {
       setLiked(true);
@@ -49,7 +63,7 @@ function suggestedVideoPage({ data, comments, suggested }) {
     <div className="bg-black-medium min-h-screen">
       <Header />
       <div className="flex">
-        <main className="items-center justify-center w-full pl-5 pt-5 text-center overflow-scroll scrollbar-hide scrollbar-hide">
+        <main className="items-center justify-center w-full pl-5 pt-5 text-center overflow-scroll scrollbar-hide">
           <div>
             <div
               className="aspect-w-14 aspect-h-7"
@@ -58,17 +72,18 @@ function suggestedVideoPage({ data, comments, suggested }) {
               }}
             />
           </div>
-          <div className="grid grid-cols-2 h-24 pb-20 ">
-            <div className="pt-4 text-left">
-              <h2 className="text-white text-xl pb-3 w-full">
+          <div className="h-18 sm:h-24 pb-2 lg:pb-20">
+            <div className="pt-2 sm:pt-4 text-left">
+              <h2 className="text-white sm:text-xl pb-3 w-full text-mobileSm">
                 {data.items[0]?.snippet.title}
               </h2>
-              <p className="text-sm text-gray-400">
-                {formattedViewCount} views · {month + " " + day + ", " + year}
-              </p>
             </div>
-            <div className="flex text-white items-end justify-end">
-              <p className="flex text-sm font-semibold items-center">
+            <div className="flex text-white items-center justify-end sm:mr-10 lg:mr-0 w-full ">
+              <p className="text-mobileSm8 sm:text-sm text-gray-400 w-full text-left">
+                {numFormatter(viewInt)} views ·{" "}
+                {month + " " + day + ", " + year}
+              </p>
+              <p className="flex font-semibold items-center text-mobileSm sm:text-base">
                 {liked ? (
                   <ThumbUpIcon
                     onClick={handleLikeClick}
@@ -83,7 +98,7 @@ function suggestedVideoPage({ data, comments, suggested }) {
 
                 {data.items[0]?.statistics.likeCount}
               </p>
-              <p className="flex pl-4 text-sm font-semibold items-center">
+              <p className="flex pl-4 text-sm font-semibold items-center text-mobileSm sm:text-base">
                 {disliked ? (
                   <ThumbDownIcon
                     onClick={handleDisikeClick}
@@ -97,15 +112,18 @@ function suggestedVideoPage({ data, comments, suggested }) {
                 )}
                 {data.items[0]?.statistics.dislikeCount}
               </p>
-              <p className="flex pl-4 text-sm font-semibold items-center cursor-pointer">
-                <ShareIcon className="w-8 pr-2" /> SHARE
+              <p className="flex pl-4 font-semibold items-center cursor-pointer text-mobileSm sm:text-base">
+                <ShareIcon className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer" />
+                SHARE
               </p>
-              <p className="flex pl-4 text-sm font-semibold items-center cursor-pointer">
-                <SaveIcon className="w-8 pr-2 item-top" /> SAVE
+              <p className="flex pl-4  font-semibold items-center cursor-pointer text-mobileSm sm:text-base">
+                <SaveIcon className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer item-top" />
+                SAVE
               </p>
             </div>
           </div>
-          <div className="pt-5">
+          <div className="border-b border-gray-700" />
+          <div>
             <CommentSection comments={comments} />
           </div>
         </main>
