@@ -89,7 +89,7 @@ function Comments({
                 </p>
 
                 <p
-                  className="text-gray-400 hover:underline cursor-pointer"
+                  className="text-gray-400 hover:underline cursor-pointer text-mobileSm sm:text-base"
                   onClick={showMore}
                 >
                   {readShow}
