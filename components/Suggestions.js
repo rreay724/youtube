@@ -1,6 +1,7 @@
 import { SuggestionsThumbnail } from "../components/index";
 
 function Suggestions({ data }) {
+  console.log("SUGGESTIONS", data);
   return (
     <div className="w-suggestionWidth min-h-screen pr-10 hidden lg:inline-block">
       {!data.error ? (

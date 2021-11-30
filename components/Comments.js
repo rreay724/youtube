@@ -15,6 +15,11 @@ function Comments({
 }) {
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
+  const textDisplaySnippet = textDisplay.substring(0, 300) + "...";
+  const date = new Date(publishedAt);
+  const month = date.toString().split(" ")[1];
+  const day = date.toString().split(" ")[2];
+  const year = date.toString().split(" ")[3];
 
   const handleLikeClick = () => {
     if (liked === false) {
@@ -34,7 +39,7 @@ function Comments({
     }
   };
   return (
-    <div className="text-left py-3 flex">
+    <div className="text-left py-3 flex w-11/12">
       <div>
         <Image
           src={profileImageUrl}
@@ -47,12 +52,16 @@ function Comments({
         <div className="flex pl-5">
           <div>
             <div className="flex items-center pb-2">
-              <h2 className="text-white font-semibold text-sm">
+              <h2 className="text-white font-semibold text-mobileSm8 sm:text-sm">
                 {authorDisplayName}
               </h2>
-              <p className="text-gray-400 text-xs pl-2 pt-0.5">{publishedAt}</p>
+              <p className="text-gray-400 text-mobileSm sm:text-xs pl-2 pt-0.5">
+                {month + " " + day + ", " + year}
+              </p>
             </div>
-            <p className="text-white text-sm">{textDisplay}</p>
+            <p className="text-white text-mobileSm sm:text-sm">
+              {textDisplaySnippet}
+            </p>
           </div>
         </div>
 
@@ -60,33 +69,33 @@ function Comments({
           <div className="pt-3 flex">
             {liked ? (
               <ThumbUpIcon
-                className="w-5 text-white cursor-pointer"
+                className="w-3 sm:w-5  text-white cursor-pointer"
                 onClick={handleLikeClick}
               />
             ) : (
               <ThumbUpOutline
-                className="w-5 text-white cursor-pointer"
+                className="w-3 sm:w-5  text-white cursor-pointer"
                 onClick={handleLikeClick}
               />
             )}
-            <p className="text-gray-400 text-xs flex items-center pl-2">
+            <p className="text-gray-400  text-mobileSm sm:text-xs  flex items-center pl-2">
               {likeCount}
             </p>
           </div>
           <div className="pt-3 pl-4">
             {disliked ? (
               <ThumbDownIcon
-                className="w-5 text-white cursor-pointer"
+                className="w-3 sm:w-5  text-white cursor-pointer"
                 onClick={handleDisikeClick}
               />
             ) : (
               <ThumbDownOutline
-                className="w-5 text-white cursor-pointer"
+                className="w-3 sm:w-5  text-white cursor-pointer"
                 onClick={handleDisikeClick}
               />
             )}
           </div>
-          <p className="items-bottom pt-3 pl-4 text-gray-400 text-xs cursor-pointer">
+          <p className="items-bottom pt-3 pl-4 text-gray-400 text-mobileSm sm:text-xs cursor-pointer">
             REPLY
           </p>
         </div>

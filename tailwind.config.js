@@ -9,7 +9,7 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
-      fontSize: { mobileXs: "5px", mobileSm: "10px" },
+      fontSize: { mobileXs: "5px", mobileSm: "10px", mobileSm8: "8px" },
       width: { suggestionWidth: "43rem" },
       colors: {
         black: {

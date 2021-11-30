@@ -1,12 +1,15 @@
 import { Comments } from "./index";
 
-function CommentSection({ comments }) {
+function CommentSection({ comments, commentCount }) {
   return (
-    <div className="min-h-6/12 border-t border-gray-700 pt-5 text-left">
-      <h2 className="text-white font-semibold pb-5">1,495 Comments</h2>
+    <div className="min-h-6/12 pt-5 text-left">
+      <h2 className="text-white font-semibold pb-5">
+        {Number(commentCount).toLocaleString()} Comments
+      </h2>
       {!comments.error ? (
         comments.items.map((item) => (
           <Comments
+            key={item.id}
             profileImageUrl={
               item.snippet.topLevelComment.snippet.profileImageUrl
             }
