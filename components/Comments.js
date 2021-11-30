@@ -15,11 +15,32 @@ function Comments({
 }) {
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
-  const textDisplaySnippet = textDisplay.substring(0, 300) + "...";
+  const [textSnippet, setTextSnippet] = useState(false);
+  const [readShow, setReadShow] = useState("Read more");
   const date = new Date(publishedAt);
   const month = date.toString().split(" ")[1];
   const day = date.toString().split(" ")[2];
   const year = date.toString().split(" ")[3];
+  console.log("COMMENT LENGTH ", textDisplay.length);
+
+  const showMore = () => {
+    if (textSnippet === false) {
+      setTextSnippet(true);
+    } else if (textSnippet === true) {
+      setTextSnippet(false);
+    }
+    if (readShow === "Read more") {
+      setReadShow("Show less");
+    } else if (readShow === "Show less") {
+      setReadShow("Read more");
+    }
+  };
+
+  // if (textDisplay.length > 10) {
+  //   setTextDisplaySnippet(textDisplay.substring(0, 10) + "...");
+  // } else {
+  //   setTextDisplaySnippet(textDisplay);
+  // }
 
   const handleLikeClick = () => {
     if (liked === false) {
@@ -59,9 +80,39 @@ function Comments({
                 {month + " " + day + ", " + year}
               </p>
             </div>
-            <p className="text-white text-mobileSm sm:text-sm">
-              {textDisplaySnippet}
-            </p>
+            {textDisplay.length > 10 ? (
+              <>
+                <p className="text-white text-mobileSm sm:text-sm">
+                  {textSnippet === false
+                    ? textDisplay.substring(0, 10) + "..."
+                    : textDisplay}
+                </p>
+
+                <p
+                  className="text-gray-400 hover:underline cursor-pointer"
+                  onClick={showMore}
+                >
+                  {readShow}
+                </p>
+              </>
+            ) : (
+              <p className="text-white text-mobileSm sm:text-sm">
+                {textDisplay}
+              </p>
+            )}
+            {/* <p className="text-white text-mobileSm sm:text-sm">
+              {textDisplaySnippet.length > 10
+                ? textDisplaySnippet.substring(0, 10) + "..."
+                : textDisplaySnippet}
+              {textDisplay.length > 10 ? (
+                <p
+                  className="text-gray-400 hover:underline cursor-pointer"
+                  onClick={showMore}
+                >
+                  Read more
+                </p>
+              ) : null}
+            </p> */}
           </div>
         </div>
 
