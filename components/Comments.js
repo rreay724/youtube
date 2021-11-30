@@ -80,11 +80,11 @@ function Comments({
                 {month + " " + day + ", " + year}
               </p>
             </div>
-            {textDisplay.length > 10 ? (
+            {textDisplay.length > 300 ? (
               <>
                 <p className="text-white text-mobileSm sm:text-sm">
                   {textSnippet === false
-                    ? textDisplay.substring(0, 10) + "..."
+                    ? textDisplay.substring(0, 300) + "..."
                     : textDisplay}
                 </p>
 
