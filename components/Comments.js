@@ -65,7 +65,7 @@ function Comments({
   };
   return (
     <div className="text-left py-3 flex w-11/12 items-bottom">
-      <div className="flex-none w-6 sm:w-10 pt-1 sm:p-0">
+      <div className="flex-none w-6 sm:w-10 pt-1">
         <Image
           src={profileImageUrl}
           width={35}
