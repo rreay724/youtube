@@ -21,7 +21,6 @@ function Comments({
   const month = date.toString().split(" ")[1];
   const day = date.toString().split(" ")[2];
   const year = date.toString().split(" ")[3];
-  console.log("COMMENT LENGTH ", textDisplay.length);
 
   const showMore = () => {
     if (textSnippet === false) {

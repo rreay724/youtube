@@ -33,9 +33,6 @@ function searchVideoPage({ data, comments, searchVideo }) {
   let likeInt = parseInt(
     searchVideo.items[0]?.statistics.likeCount.replaceAll(",", "")
   );
-  let disLikeInt = parseInt(
-    searchVideo.items[0]?.statistics.disLikeCount.replaceAll(",", "")
-  );
 
   const numFormatter = (num) => {
     if (num > 999 && num < 1000000) {
@@ -117,7 +114,7 @@ function searchVideoPage({ data, comments, searchVideo }) {
                     className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer"
                   />
                 )}
-                {numFormatter(disLikeInt)}
+                {numFormatter(searchVideo.items[0]?.statistics.dislikeCount)}
               </p>
               <p className="flex pl-4 font-semibold items-center cursor-pointer text-mobileSm sm:text-base">
                 <ShareIcon className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer" />{" "}

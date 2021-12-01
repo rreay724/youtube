@@ -10,12 +10,13 @@ export default function Home({ data }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <div className="flex">
-        <div className="h-screen sticky top-0">
+
+      <div className="flex h-screen">
+        <div className="sticky inset-y-0">
           <Sidebar />
         </div>
 
-        <main className="flex-grow mt-4 pr-5d pl-5 md:pl-24 overflow-y-scroll grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+        <main className="flex-grow mt-8 pr-5 pl-5 overflow-scroll grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6 scrollbar-hide ">
           {!data.error ? (
             data.items?.map((item) => (
               <VideoThumbnail
@@ -48,7 +49,7 @@ export default function Home({ data }) {
 
 export async function getServerSideProps() {
   const data = await fetch(
-    `https://youtube.googleapis.com/youtube/v3/videos?&part=player&part=statistics&part=id&part=snippet&chart=mostPopular&maxResults=48&key=${process.env.NEXT_PUBLIC_API_KEY}`
+    `https://youtube.googleapis.com/youtube/v3/videos?&part=player&part=statistics&part=id&part=snippet&chart=mostPopular&maxResults=50&key=${process.env.NEXT_PUBLIC_API_KEY}`
   ).then((res) => res.json());
 
   return {

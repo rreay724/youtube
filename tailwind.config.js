@@ -19,6 +19,10 @@ module.exports = {
           medium: "#191919",
         },
       },
+      screens: {
+        "3xl": "1920px",
+        "4xl": "2335px",
+      },
     },
   },
   variants: {
