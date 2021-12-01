@@ -61,7 +61,7 @@ function Comments({
   };
   return (
     <div className="text-left py-3 flex w-11/12">
-      <div>
+      <div className="absolute">
         <Image
           src={profileImageUrl}
           width={35}
@@ -70,53 +70,36 @@ function Comments({
         />
       </div>
       <div>
-        <div className="flex pl-5">
-          <div>
-            <div className="flex items-center pb-2">
-              <h2 className="text-white font-semibold text-mobileSm8 sm:text-sm">
-                {authorDisplayName}
-              </h2>
-              <p className="text-gray-400 text-mobileSm sm:text-xs pl-2 pt-0.5">
-                {month + " " + day + ", " + year}
-              </p>
-            </div>
-            {textDisplay.length > 300 ? (
-              <>
-                <p className="text-white text-mobileSm sm:text-sm">
-                  {textSnippet === false
-                    ? textDisplay.substring(0, 300) + "..."
-                    : textDisplay}
-                </p>
-
-                <p
-                  className="text-gray-400 hover:underline cursor-pointer text-mobileSm sm:text-base"
-                  onClick={showMore}
-                >
-                  {readShow}
-                </p>
-              </>
-            ) : (
-              <p className="text-white text-mobileSm sm:text-sm">
-                {textDisplay}
-              </p>
-            )}
-            {/* <p className="text-white text-mobileSm sm:text-sm">
-              {textDisplaySnippet.length > 10
-                ? textDisplaySnippet.substring(0, 10) + "..."
-                : textDisplaySnippet}
-              {textDisplay.length > 10 ? (
-                <p
-                  className="text-gray-400 hover:underline cursor-pointer"
-                  onClick={showMore}
-                >
-                  Read more
-                </p>
-              ) : null}
-            </p> */}
+        <div className="pl-12">
+          <div className="flex items-center pb-2">
+            <h2 className="text-white font-semibold text-mobileSm8 sm:text-sm">
+              {authorDisplayName}
+            </h2>
+            <p className="text-gray-400 text-mobileSm sm:text-xs pl-2 pt-0.5">
+              {month + " " + day + ", " + year}
+            </p>
           </div>
+          {textDisplay.length > 300 ? (
+            <>
+              <p className="text-white text-mobileSm sm:text-sm">
+                {textSnippet === false
+                  ? textDisplay.substring(0, 300) + "..."
+                  : textDisplay}
+              </p>
+
+              <p
+                className="text-gray-400 hover:underline cursor-pointer text-mobileSm sm:text-base"
+                onClick={showMore}
+              >
+                {readShow}
+              </p>
+            </>
+          ) : (
+            <p className="text-white text-mobileSm sm:text-sm">{textDisplay}</p>
+          )}
         </div>
 
-        <div className="flex pl-5">
+        <div className="flex pl-12">
           <div className="pt-3 flex">
             {liked ? (
               <ThumbUpIcon
