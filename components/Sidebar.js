@@ -3,16 +3,17 @@ import {
   HomeIcon,
   CollectionIcon,
   SearchCircleIcon,
+  ClockIcon,
 } from "@heroicons/react/outline";
 
 function Sidebar() {
   const router = useRouter();
   return (
     <div
-      className=" pt-2 w-24 xl:w-64 bg-black-light hidden sm:inline-flex md:inline-flex 
-    lg:inline-flex xl:inline-flex 2xl:inline-flex min-h-screen fixed"
+      className=" pt-2 w-24 xl:w-64 bg-black-light hidden sm:inline-block md:inline-block 
+    lg:inline-block xl:inline-block 2xl:inline-block min-h-screen fixed"
     >
-      <div className="w-full ">
+      <div className="w-full">
         <div
           onClick={() => {
             router.push("/");
@@ -31,6 +32,12 @@ function Sidebar() {
           <p className="text-mobileSm xl:pl-5 xl:text-sm">Subscriptions</p>
         </div>
         <div className="border-b w-16 xl:w-56 pt-4 border-gray-700" />
+      </div>
+      <div className="w-full pt-4">
+        <div className="xl:sidebarComponent smallSidebarComponent">
+          <ClockIcon className="w-10 p-2 mx-auto xl:mx-0" />
+          <p className="text-mobileSm xl:pl-5 xl:text-sm">History</p>
+        </div>
       </div>
     </div>
   );
