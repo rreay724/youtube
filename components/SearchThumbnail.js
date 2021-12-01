@@ -27,7 +27,7 @@ function SearchThumbnail({
       }}
       className="w-full flex cursor-pointer  transition duration-200 ease-out active:bg-black-superLight"
     >
-      <div className="py-2">
+      <div className="py-2 flex-none w-44 md:w-64">
         <Image
           src={thumbnail}
           width={thumbnailWidth}

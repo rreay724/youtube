@@ -85,7 +85,7 @@ function Comments({
           </div>
           {textDisplay.length > 300 ? (
             <>
-              <p className="text-white text-mobileSm sm:text-sm">
+              <p className="text-white text-mobileSm sm:text-sm ">
                 {textSnippet === false
                   ? textDisplay.substring(0, 300) + "..."
                   : textDisplay}

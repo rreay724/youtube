@@ -40,24 +40,15 @@ function VideoThumbnail({
           },
         });
       }}
-      className="flex cursor-pointer transition duration-200 ease-out active:bg-black-superLight"
+      className="cursor-pointer transition duration-200 ease-out active:bg-black-superLight mx-auto ml-4"
     >
-      <div className="py-2">
-        <Image
-          src={thumbnail}
-          width={thumbnailWidth}
-          height={thumbnailHeight}
-        />
-      </div>
-      <div className="text-left ml-2 md:ml-4 mt-3 md:w-8/12 w-12/12">
-        <h1 className="text-white text-mobileXs md:text-lg">{title}</h1>
-        <p className="text-gray-400 text-mobileXs md:text-xs pt-1">
+      <Image src={thumbnail} width={thumbnailWidth} height={thumbnailHeight} />
+      <div className="w-80">
+        <h1 className="text-white text-sm md:text-lg">{title}</h1>
+        <p className="text-gray-400 text-sm md:text-xs pt-1">
           {channelTitle} · {viewCount} views · {month + " " + day + ", " + year}
         </p>
         <p className="text-gray-400 text-mobileXs md:text-xs pb-4"></p>
-        <p className="text-gray-400 text-mobileXs md:text-xs overflow-auto">
-          {descriptionSnippet}
-        </p>
       </div>
     </div>
   );

@@ -10,8 +10,8 @@ function Sidebar() {
   const router = useRouter();
   return (
     <div
-      className=" pt-2 w-24 xl:w-64 bg-black-light hidden sm:inline-block md:inline-block 
-    lg:inline-block xl:inline-block 2xl:inline-block min-h-screen fixed"
+      className=" pt-2 xl:w-64 bg-black-light hidden sm:inline-block md:inline-block 
+    lg:inline-block xl:inline-block 2xl:inline-block min-h-screen "
     >
       <div className="w-full">
         <div

@@ -18,7 +18,7 @@ export default function searchPage({ data }) {
         <Sidebar />
 
         <main className="items-center justify-center w-full px-10 md:px-20 text-center overflow-y-scroll sm:ml-20 md:ml-10 lg:ml-16 xl:ml-56">
-          <section className="mt-5 lg:mt-10">
+          <section className="mt-5 lg:mt-10 ">
             {!data.error ? (
               data.items?.map((item) => (
                 <SearchThumbnail
