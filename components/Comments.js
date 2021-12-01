@@ -21,7 +21,6 @@ function Comments({
   const month = date.toString().split(" ")[1];
   const day = date.toString().split(" ")[2];
   const year = date.toString().split(" ")[3];
-  console.log("COMMENT LENGTH ", textDisplay.length);
 
   const showMore = () => {
     if (textSnippet === false) {
@@ -85,7 +84,7 @@ function Comments({
           </div>
           {textDisplay.length > 300 ? (
             <>
-              <p className="text-white text-mobileSm sm:text-sm">
+              <p className="text-white text-mobileSm sm:text-sm ">
                 {textSnippet === false
                   ? textDisplay.substring(0, 300) + "..."
                   : textDisplay}

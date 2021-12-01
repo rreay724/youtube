@@ -4,7 +4,7 @@
 
 @layer components {
   .sidebarComponent {
-    @apply text-gray-200 px-4 flex items-center hover:bg-black-superLight cursor-pointer  mr-4 active:bg-black-superDuperLight;
+    @apply text-gray-200 px-4 h-10 flex items-center hover:bg-black-superLight cursor-pointer  mr-4 active:bg-black-superDuperLight;
   }
 }
 

@@ -4,42 +4,43 @@ import { Header, Sidebar, VideoThumbnail } from "../components/index";
 
 export default function Home({ data }) {
   return (
-    <div className=" bg-black-medium min-h-screen ">
+    <div className=" bg-black-medium min-h-screen">
       <Head>
         <title>YouTube</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <div className="flex">
-        <Sidebar />
 
-        <main className="items-center justify-center w-full px-10 md:px-20 text-center overflow-y-scroll sm:ml-20 md:ml-10 lg:ml-16 xl:ml-56">
-          <section className="mt-5 lg:mt-10">
-            {!data.error ? (
-              data.items?.map((item) => (
-                <VideoThumbnail
-                  key={item.id}
-                  id={item.id}
-                  thumbnail={item.snippet.thumbnails.medium.url}
-                  thumbnailWidth={item.snippet.thumbnails.medium.width}
-                  thumbnailHeight={item.snippet.thumbnails.medium.height}
-                  description={item.snippet.description}
-                  channelTitle={item.snippet.channelTitle}
-                  title={item.snippet.title}
-                  commentCount={item.statistics.commentCount}
-                  dislikeCount={item.statistics.dislikeCount}
-                  likeCount={item.statistics.likeCount}
-                  viewCount={Number(item.statistics.viewCount).toLocaleString()}
-                  publishedAt={item.snippet.publishedAt}
-                  embedHtml={item.player.embedHtml}
-                />
-              ))
-            ) : (
-              <p className="text-white">
-                API Limit Reached. Cannot retrieve videos.
-              </p>
-            )}
-          </section>
+      <div className="flex h-screen">
+        <div className="sticky inset-y-0">
+          <Sidebar />
+        </div>
+
+        <main className="flex-grow mt-8 pr-5 pl-5 overflow-scroll grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6 scrollbar-hide ">
+          {!data.error ? (
+            data.items?.map((item) => (
+              <VideoThumbnail
+                key={item.id}
+                id={item.id}
+                thumbnail={item.snippet.thumbnails.medium.url}
+                thumbnailWidth={item.snippet.thumbnails.medium.width}
+                thumbnailHeight={item.snippet.thumbnails.medium.height}
+                description={item.snippet.description}
+                channelTitle={item.snippet.channelTitle}
+                title={item.snippet.title}
+                commentCount={item.statistics.commentCount}
+                dislikeCount={item.statistics.dislikeCount}
+                likeCount={item.statistics.likeCount}
+                viewCount={Number(item.statistics.viewCount).toLocaleString()}
+                publishedAt={item.snippet.publishedAt}
+                embedHtml={item.player.embedHtml}
+              />
+            ))
+          ) : (
+            <p className="text-white">
+              API Limit Reached. Cannot retrieve videos.
+            </p>
+          )}
         </main>
       </div>
     </div>

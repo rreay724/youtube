@@ -14,11 +14,13 @@ export default function searchPage({ data }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <div className="flex">
-        <Sidebar />
+      <div className="flex h-screen">
+        <div className="sticky inset-y-0">
+          <Sidebar />
+        </div>
 
-        <main className="items-center justify-center w-full px-10 md:px-20 text-center overflow-y-scroll sm:ml-20 md:ml-10 lg:ml-16 xl:ml-56">
-          <section className="mt-5 lg:mt-10">
+        <main className="items-center justify-center w-full pl-5 text-center overflow-y-scroll">
+          <section className="mt-5">
             {!data.error ? (
               data.items?.map((item) => (
                 <SearchThumbnail
