@@ -3,7 +3,7 @@ import { SuggestionsThumbnail } from "../components/index";
 function Suggestions({ data }) {
   console.log("SUGGESTIONS", data);
   return (
-    <div className="w-suggestionWidth min-h-screen pr-10 hidden lg:inline-block">
+    <div className="w-suggestionWidth min-h-screen pr-10 hidden lg:inline-block pt-5">
       {!data.error ? (
         data.items.map((item) => (
           <SuggestionsThumbnail

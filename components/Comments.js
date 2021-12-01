@@ -36,11 +36,15 @@ function Comments({
     }
   };
 
-  // if (textDisplay.length > 10) {
-  //   setTextDisplaySnippet(textDisplay.substring(0, 10) + "...");
-  // } else {
-  //   setTextDisplaySnippet(textDisplay);
-  // }
+  const numFormatter = (num) => {
+    if (num > 999 && num < 1000000) {
+      return (num / 1000).toFixed(1) + "K"; // convert to K for number from > 1000 < 1 million
+    } else if (num > 1000000) {
+      return (num / 1000000).toFixed(1) + "M"; // convert to M for number from > 1 million
+    } else if (num < 900) {
+      return num; // if value < 1000, nothing to do
+    }
+  };
 
   const handleLikeClick = () => {
     if (liked === false) {
@@ -60,8 +64,8 @@ function Comments({
     }
   };
   return (
-    <div className="text-left py-3 flex w-11/12">
-      <div className="absolute">
+    <div className="text-left py-3 flex w-11/12 items-bottom">
+      <div className="flex-none w-6 sm:w-10 pt-1 sm:p-0">
         <Image
           src={profileImageUrl}
           width={35}
@@ -70,7 +74,7 @@ function Comments({
         />
       </div>
       <div>
-        <div className="pl-12">
+        <div className="pl-3 sm:pl-4">
           <div className="flex items-center pb-2">
             <h2 className="text-white font-semibold text-mobileSm8 sm:text-sm">
               {authorDisplayName}
@@ -99,7 +103,7 @@ function Comments({
           )}
         </div>
 
-        <div className="flex pl-12">
+        <div className="flex pl-3 sm:pl-4">
           <div className="pt-3 flex">
             {liked ? (
               <ThumbUpIcon
@@ -113,7 +117,7 @@ function Comments({
               />
             )}
             <p className="text-gray-400  text-mobileSm sm:text-xs  flex items-center pl-2">
-              {likeCount}
+              {numFormatter(likeCount)}
             </p>
           </div>
           <div className="pt-3 pl-4">

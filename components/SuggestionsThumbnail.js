@@ -16,7 +16,7 @@ function SuggestionsThumbnail({
 
   return (
     <div
-      className="flex pl-5 pt-5 cursor-pointer"
+      className="flex pl-5 cursor-pointer items-top pb-0.5"
       onClick={() => {
         router.push({
           pathname: "/suggestedVideoPage",
@@ -26,11 +26,13 @@ function SuggestionsThumbnail({
         });
       }}
     >
-      <div className="w-52">
+      <div className="flex-none">
         {thumbnail ? <Image src={thumbnail} width={190} height={116} /> : null}
       </div>
       <div className="pl-2">
-        <h2 className="text-white overflow-x-auto">{title}</h2>
+        <h2 className="text-white overflow-x-auto text-sm font-semibold">
+          {title}
+        </h2>
         <div className="pt-1">
           <p className="text-xs text-gray-400">{channelTitle}</p>
           {/* <p className="text-xs text-gray-400">{viewCount} views</p> */}
