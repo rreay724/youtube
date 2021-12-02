@@ -2,6 +2,9 @@ import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/dist/client/router";
 import { SearchIcon } from "@heroicons/react/outline";
+import { UserCircleIcon } from "@heroicons/react/solid";
+import { app } from "../firebase";
+import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 
 function Header() {
   const router = useRouter();
@@ -16,13 +19,37 @@ function Header() {
     });
   };
 
+  const login = () => {
+    const auth = getAuth();
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        // ...
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
+  };
+
   return (
     <header className="sticky top-0 z-50 grid grid-cols-3 bg-black-light  items-center">
       <div
         onClick={() => {
           router.push("/");
         }}
-        className="relative flex items-center h-14 cursor-pointer my-auto pl-6"
+        className="relative flex items-center h-14 cursor-pointer my-auto pl-5"
       >
         <Image
           src="/YouTube-Logo.png"
@@ -32,7 +59,7 @@ function Header() {
           objectPosition="left"
         />
       </div>
-      <div className="flex items-center md:shadow-sm h-8 w-full border border-black-medium bg-black-superLight">
+      <div className="flex items-center md:shadow-sm h-8 border border-black-medium bg-black-superLight">
         <input
           onChange={(e) => {
             setSearchInput(e.target.value);
@@ -40,7 +67,7 @@ function Header() {
           value={searchInput}
           type="text"
           //   placeholder={placeholder ? placeholder : "Start your search"}
-          className="text-gray-300 flex-grow pl-5 bg-black-medium outline-none text-lg placeholder-gray-500 h-9 "
+          className="text-gray-300 flex-grow pl-2 bg-black-medium outline-none text-lg placeholder-gray-500 h-9 "
           placeholder="Search"
           onKeyDown={(e) => {
             if (e.code === "Enter") {
@@ -52,6 +79,12 @@ function Header() {
         <SearchIcon
           className="h-11 py-3 cursor-pointer hidden md:inline-flex sticky md:mx-2 text-white"
           onClick={handleSearch}
+        />
+      </div>
+      <div className="text-right pr-4">
+        <UserCircleIcon
+          className="h-14 py-3 cursor-pointer inline-flex sticky md:mx-2 text-white"
+          onClick={login}
         />
       </div>
     </header>
