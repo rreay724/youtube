@@ -23,10 +23,15 @@ function videoPage({ data, comments }) {
     publishedAt,
     embedHtml,
     commentCount,
+    description,
+    channelTitle,
   } = router.query;
 
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
+  const [readShow, setReadShow] = useState("SHOW MORE");
+  const [textSnippet, setTextSnippet] = useState(false);
+
   const date = new Date(publishedAt);
   const month = date.toString().split(" ")[1];
   const day = date.toString().split(" ")[2];
@@ -35,6 +40,19 @@ function videoPage({ data, comments }) {
   let viewInt = parseInt(viewCount.replaceAll(",", ""));
   let likeInt = parseInt(likeCount.replaceAll(",", ""));
   let disLikeInt = parseInt(dislikeCount.replaceAll(",", ""));
+
+  const showMore = () => {
+    if (textSnippet === false) {
+      setTextSnippet(true);
+    } else if (textSnippet === true) {
+      setTextSnippet(false);
+    }
+    if (readShow === "SHOW MORE") {
+      setReadShow("SHOW LESS");
+    } else if (readShow === "SHOW LESS") {
+      setReadShow("SHOW MORE");
+    }
+  };
 
   const numFormatter = (num) => {
     if (num > 999 && num < 1000000) {
@@ -87,7 +105,7 @@ function videoPage({ data, comments }) {
                 {numFormatter(viewInt)} views ·{" "}
                 {month + " " + day + ", " + year}
               </p>
-              <p className="flex font-semibold items-center text-mobileSm sm:text-base">
+              <p className="flex items-center text-mobileSm sm:text-sm">
                 {liked ? (
                   <ThumbUpIcon
                     onClick={handleLikeClick}
@@ -102,7 +120,7 @@ function videoPage({ data, comments }) {
 
                 {numFormatter(likeInt)}
               </p>
-              <p className="flex pl-4 font-semibold items-center text-mobileSm sm:text-base">
+              <p className="flex pl-4 items-center text-mobileSm sm:text-sm">
                 {disliked ? (
                   <ThumbDownIcon
                     onClick={handleDisikeClick}
@@ -114,17 +132,38 @@ function videoPage({ data, comments }) {
                     className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer"
                   />
                 )}
-                {numFormatter(disLikeInt)}
+                DISLIKE
               </p>
-              <p className="flex pl-4 font-semibold items-center cursor-pointer text-mobileSm sm:text-base">
+              <p className="flex pl-4  items-center cursor-pointer text-mobileSm sm:text-sm">
                 <ShareIcon className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer" />
                 SHARE
               </p>
-              <p className="flex pl-4  font-semibold items-center cursor-pointer text-mobileSm sm:text-base">
+              <p className="flex pl-4 items-center cursor-pointer text-mobileSm sm:text-sm">
                 <SaveIcon className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer item-top" />
                 SAVE
               </p>
             </div>
+          </div>
+          <div className="border-b border-gray-700" />
+          <div className="text-white text-left py-5 w-8/12">
+            <h3 className="font-semibold text-sm">{channelTitle}</h3>
+            {description.length > 700 ? (
+              <>
+                <p className="pt-4 text-xs">
+                  {textSnippet === false
+                    ? description.substring(0, 700) + "..."
+                    : description}
+                </p>
+                <p
+                  className="text-gray-400 cursor-pointer text-mobileSm sm:text-xs pt-2"
+                  onClick={showMore}
+                >
+                  {readShow}
+                </p>
+              </>
+            ) : (
+              <p className="pt-4 text-xs">{description}</p>
+            )}
           </div>
           <div className="border-b border-gray-700" />
           <div>

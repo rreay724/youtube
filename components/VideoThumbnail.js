@@ -37,6 +37,8 @@ function VideoThumbnail({
             likeCount: likeCount,
             publishedAt: publishedAt,
             embedHtml: embedHtml,
+            channelTitle: channelTitle,
+            description: description,
           },
         });
       }}
