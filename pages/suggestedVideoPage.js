@@ -18,6 +18,8 @@ function suggestedVideoPage({ data, comments, suggested }) {
 
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
+  const [readShow, setReadShow] = useState("SHOW MORE");
+  const [textSnippet, setTextSnippet] = useState(false);
   const date = new Date(data.items[0]?.snippet.publishedAt);
   const month = date.toString().split(" ")[1];
   const day = date.toString().split(" ")[2];
@@ -29,6 +31,19 @@ function suggestedVideoPage({ data, comments, suggested }) {
   let viewInt = parseInt(
     data.items[0]?.statistics.viewCount.replaceAll(",", "")
   );
+
+  const showMore = () => {
+    if (textSnippet === false) {
+      setTextSnippet(true);
+    } else if (textSnippet === true) {
+      setTextSnippet(false);
+    }
+    if (readShow === "SHOW MORE") {
+      setReadShow("SHOW LESS");
+    } else if (readShow === "SHOW LESS") {
+      setReadShow("SHOW MORE");
+    }
+  };
 
   const numFormatter = (num) => {
     if (num > 999 && num < 1000000) {
@@ -83,7 +98,7 @@ function suggestedVideoPage({ data, comments, suggested }) {
                 {numFormatter(viewInt)} views ·{" "}
                 {month + " " + day + ", " + year}
               </p>
-              <p className="flex font-semibold items-center text-mobileSm sm:text-base">
+              <p className="flex items-center text-mobileSm sm:text-sm">
                 {liked ? (
                   <ThumbUpIcon
                     onClick={handleLikeClick}
@@ -98,7 +113,7 @@ function suggestedVideoPage({ data, comments, suggested }) {
 
                 {data.items[0]?.statistics.likeCount}
               </p>
-              <p className="flex pl-4 text-sm font-semibold items-center text-mobileSm sm:text-base">
+              <p className="flex pl-4 text-sm items-center text-mobileSm sm:text-sm">
                 {disliked ? (
                   <ThumbDownIcon
                     onClick={handleDisikeClick}
@@ -112,17 +127,46 @@ function suggestedVideoPage({ data, comments, suggested }) {
                 )}
                 {data.items[0]?.statistics.dislikeCount}
               </p>
-              <p className="flex pl-4 font-semibold items-center cursor-pointer text-mobileSm sm:text-base">
+              <p className="flex pl-4 items-center cursor-pointer text-mobileSm sm:text-sm">
                 <ShareIcon className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer" />
                 SHARE
               </p>
-              <p className="flex pl-4  font-semibold items-center cursor-pointer text-mobileSm sm:text-base">
+              <p className="flex pl-4 items-center cursor-pointer text-mobileSm sm:text-sm">
                 <SaveIcon className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer item-top" />
                 SAVE
               </p>
             </div>
           </div>
           <div className="border-b border-gray-700" />
+          <div className="text-white text-left py-5 w-8/12">
+            <h3 className="font-semibold text-sm">
+              {searchVideo.items[0]?.snippet.channelTitle}
+            </h3>
+            {searchVideo.items[0]?.snippet.description.length > 700 ? (
+              <>
+                <p className="pt-4 text-xs">
+                  {textSnippet === false
+                    ? searchVideo.items[0]?.snippet.description.substring(
+                        0,
+                        700
+                      ) + "..."
+                    : searchVideo.items[0]?.snippet.description}
+                </p>
+                <p
+                  className="text-gray-400 cursor-pointer text-mobileSm sm:text-xs pt-2"
+                  onClick={showMore}
+                >
+                  {readShow}
+                </p>
+              </>
+            ) : (
+              <p className="pt-4 text-xs">
+                {searchVideo.items[0]?.snippet.description}
+              </p>
+            )}
+          </div>
+          <div className="border-b border-gray-700" />
+
           <div>
             <CommentSection comments={comments} />
           </div>

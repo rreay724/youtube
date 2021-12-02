@@ -11,6 +11,7 @@ function Suggestions({ data }) {
             title={item.snippet?.title}
             thumbnail={item.snippet?.thumbnails.medium.url}
             channelTitle={item.snippet?.channelTitle}
+            publishedAt={item.snippet?.publishedAt}
           />
         ))
       ) : (

@@ -3,7 +3,8 @@ import { useState } from "react";
 import { useRouter } from "next/dist/client/router";
 import { SearchIcon } from "@heroicons/react/outline";
 import { UserCircleIcon, LogoutIcon } from "@heroicons/react/outline";
-import { app } from "../firebase";
+import { app, login } from "../services/firebase";
+
 import {
   GoogleAuthProvider,
   getAuth,
@@ -22,13 +23,13 @@ function Header() {
   const provider = new GoogleAuthProvider();
   const user = auth.currentUser;
 
+  console.log(user);
+
   onAuthStateChanged(auth, (user) => {
     if (user) {
       setPhotoURL(user.photoURL);
     }
   });
-
-  console.log("USER", user);
 
   const handleSearch = () => {
     router.push({

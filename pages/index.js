@@ -3,6 +3,7 @@ import Head from "next/head";
 import { Header, Sidebar, VideoThumbnail } from "../components/index";
 
 export default function Home({ data }) {
+  console.log(data);
   return (
     <div className=" bg-black-medium min-h-screen">
       <Head>
@@ -34,6 +35,7 @@ export default function Home({ data }) {
                 viewCount={Number(item.statistics.viewCount).toLocaleString()}
                 publishedAt={item.snippet.publishedAt}
                 embedHtml={item.player.embedHtml}
+                channelTitle={item.snippet.channelTitle}
               />
             ))
           ) : (
