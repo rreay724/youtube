@@ -27,8 +27,9 @@ function SuggestionsThumbnail({
             id: id,
           },
         });
-        setDoc(doc(db, "videos", id), {
-          id: id,
+        setDoc(doc(db, user.uid, id), {
+          userId: user.uid,
+          videoId: id,
           thumbnail: thumbnail,
           title: title,
           channelTitle: channelTitle,

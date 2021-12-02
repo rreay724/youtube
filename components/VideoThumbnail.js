@@ -2,6 +2,8 @@ import Image from "next/image";
 import { useRouter } from "next/dist/client/router";
 import { doc, setDoc, getFirestore } from "firebase/firestore";
 
+import { getAuth } from "firebase/auth";
+
 function VideoThumbnail({
   id,
   thumbnail,
@@ -26,6 +28,9 @@ function VideoThumbnail({
   const db = getFirestore();
   let today = new Date();
 
+  const auth = getAuth();
+  const user = auth.currentUser;
+
   return (
     <div
       onClick={() => {
@@ -45,8 +50,9 @@ function VideoThumbnail({
           },
         });
 
-        setDoc(doc(db, "videos", id), {
-          id: id,
+        setDoc(doc(db, user.uid, id), {
+          userId: user.uid,
+          videoId: id,
           thumbnail: thumbnail,
           title: title,
           channelTitle: channelTitle,

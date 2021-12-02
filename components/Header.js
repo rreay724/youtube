@@ -23,6 +23,8 @@ function Header() {
   const provider = new GoogleAuthProvider();
   const user = auth.currentUser;
 
+  console.log(user);
+
   onAuthStateChanged(auth, (user) => {
     if (user) {
       setPhotoURL(user.photoURL);
