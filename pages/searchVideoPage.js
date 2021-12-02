@@ -19,7 +19,7 @@ function searchVideoPage({ data, comments, searchVideo }) {
 
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
-  const date = new Date(publishedAt);
+  const date = new Date(searchVideo.items[0].snippet.publishedAt);
   const month = date.toString().split(" ")[1];
   const day = date.toString().split(" ")[2];
   const year = date.toString().split(" ")[3];
@@ -129,7 +129,10 @@ function searchVideoPage({ data, comments, searchVideo }) {
           <div className="border-b border-gray-700" />
 
           <div>
-            <CommentSection comments={comments} />
+            <CommentSection
+              comments={comments}
+              commentCount={searchVideo.items[0]?.statistics.commentCount}
+            />
           </div>
 
           {/* <div className=" border-b border-gray-700 h-5" /> */}
