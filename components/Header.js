@@ -23,8 +23,6 @@ function Header() {
   const provider = new GoogleAuthProvider();
   const user = auth.currentUser;
 
-  console.log(user);
-
   onAuthStateChanged(auth, (user) => {
     if (user) {
       setPhotoURL(user.photoURL);
@@ -68,7 +66,7 @@ function Header() {
         router.reload(window.location.pathname);
       })
       .catch((error) => {
-        // An error happened.
+        console.log("Error logging out: ", error);
       });
   };
 
