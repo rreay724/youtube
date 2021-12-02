@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { useRouter } from "next/dist/client/router";
+import { doc, setDoc, getFirestore } from "firebase/firestore";
 
 function SuggestionsThumbnail({
   id,
@@ -9,10 +10,12 @@ function SuggestionsThumbnail({
   thumbnailHeight,
   channelTitle,
   viewCount,
+  publishedAt,
 }) {
   // const titleSnippet = "";
   // title !== null && titleSnippet === title.substring(0, 50) + "...";
   const router = useRouter();
+  let today = new Date();
 
   return (
     <div
@@ -23,6 +26,15 @@ function SuggestionsThumbnail({
           query: {
             id: id,
           },
+        });
+        setDoc(doc(db, "videos", id), {
+          id: id,
+          thumbnail: thumbnail,
+          title: title,
+          channelTitle: channelTitle,
+          viewCount: viewCount,
+          publishedAt: publishedAt,
+          date: today,
         });
       }}
     >

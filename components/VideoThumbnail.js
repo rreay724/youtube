@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { useRouter } from "next/dist/client/router";
+import { doc, setDoc, getFirestore } from "firebase/firestore";
 
 function VideoThumbnail({
   id,
@@ -22,6 +23,8 @@ function VideoThumbnail({
   const month = date.toString().split(" ")[1];
   const day = date.toString().split(" ")[2];
   const year = date.toString().split(" ")[3];
+  const db = getFirestore();
+  let today = new Date();
 
   return (
     <div
@@ -40,6 +43,16 @@ function VideoThumbnail({
             channelTitle: channelTitle,
             description: description,
           },
+        });
+
+        setDoc(doc(db, "videos", id), {
+          id: id,
+          thumbnail: thumbnail,
+          title: title,
+          channelTitle: channelTitle,
+          viewCount: viewCount,
+          publishedAt: publishedAt,
+          date: today,
         });
       }}
       className="cursor-pointer transition duration-200 ease-out active:bg-black-superLight mx-auto ml-4 py-5"
