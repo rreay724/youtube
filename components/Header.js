@@ -2,13 +2,14 @@ import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/dist/client/router";
 import { SearchIcon } from "@heroicons/react/outline";
-import { UserCircleIcon } from "@heroicons/react/solid";
+import { UserCircleIcon, LogoutIcon } from "@heroicons/react/outline";
 import { app } from "../firebase";
 import {
   GoogleAuthProvider,
   getAuth,
   signInWithPopup,
   onAuthStateChanged,
+  signOut,
 } from "firebase/auth";
 
 function Header() {
@@ -23,13 +24,7 @@ function Header() {
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      // User is signed in, see docs for a list of available properties
-      // https://firebase.google.com/docs/reference/js/firebase.User
       setPhotoURL(user.photoURL);
-      // ...
-    } else {
-      // User is signed out
-      // ...
     }
   });
 
@@ -66,8 +61,18 @@ function Header() {
       });
   };
 
+  const logout = () => {
+    signOut(auth)
+      .then(() => {
+        router.reload(window.location.pathname);
+      })
+      .catch((error) => {
+        // An error happened.
+      });
+  };
+
   return (
-    <header className="sticky top-0 z-50 grid grid-cols-3 bg-black-light  items-center">
+    <header className="sticky top-0 z-50 grid grid-cols-3 bg-black-light  items-center pt-2">
       <div
         onClick={() => {
           router.push("/");
@@ -107,18 +112,32 @@ function Header() {
       <div className="text-right pr-4">
         {user ? (
           <div className="h-14 py-3 cursor-pointer inline-flex sticky md:mx-2 rounded-full">
-            <Image
-              src={photoURL}
-              width={30}
-              height={30}
-              className="rounded-full"
-            />
+            {photoURL ? (
+              <>
+                <LogoutIcon
+                  className="h-10 cursor-pointer  inline-flex px-7 pb-2 text-gray-400"
+                  onClick={logout}
+                />
+
+                <Image
+                  width={30}
+                  height={30}
+                  className="rounded-full"
+                  placeholder="empty"
+                  blurDataURL="https://image-component.nextjs.gallery/placeholder"
+                  src={photoURL}
+                />
+              </>
+            ) : null}
           </div>
         ) : (
-          <UserCircleIcon
-            className="h-14 py-3 cursor-pointer inline-flex sticky md:mx-2 text-white"
+          <div
+            className=" inline-flex sticky items-center pr-3 border border-blue-500 h-10 text-blue-500 cursor-pointer"
             onClick={login}
-          />
+          >
+            <UserCircleIcon className="h-12 py-3 cursor-pointer  md:mx-2" />
+            <p>SIGN IN</p>
+          </div>
         )}
       </div>
     </header>
