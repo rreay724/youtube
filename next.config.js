@@ -7,6 +7,7 @@ module.exports = {
       "i.ytimg.com",
       "campaigndonut.com",
       "yt3.ggpht.com",
+      "lh3.googleusercontent.com",
     ],
   },
 };

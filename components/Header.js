@@ -4,11 +4,36 @@ import { useRouter } from "next/dist/client/router";
 import { SearchIcon } from "@heroicons/react/outline";
 import { UserCircleIcon } from "@heroicons/react/solid";
 import { app } from "../firebase";
-import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  getAuth,
+  signInWithPopup,
+  onAuthStateChanged,
+} from "firebase/auth";
 
 function Header() {
   const router = useRouter();
   const [searchInput, setSearchInput] = useState("");
+  const [photoURL, setPhotoURL] = useState("");
+
+  // firebase
+  const auth = getAuth();
+  const provider = new GoogleAuthProvider();
+  const user = auth.currentUser;
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/firebase.User
+      setPhotoURL(user.photoURL);
+      // ...
+    } else {
+      // User is signed out
+      // ...
+    }
+  });
+
+  console.log("USER", user);
 
   const handleSearch = () => {
     router.push({
@@ -20,8 +45,6 @@ function Header() {
   };
 
   const login = () => {
-    const auth = getAuth();
-    const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
@@ -82,10 +105,21 @@ function Header() {
         />
       </div>
       <div className="text-right pr-4">
-        <UserCircleIcon
-          className="h-14 py-3 cursor-pointer inline-flex sticky md:mx-2 text-white"
-          onClick={login}
-        />
+        {user ? (
+          <div className="h-14 py-3 cursor-pointer inline-flex sticky md:mx-2 rounded-full">
+            <Image
+              src={photoURL}
+              width={30}
+              height={30}
+              className="rounded-full"
+            />
+          </div>
+        ) : (
+          <UserCircleIcon
+            className="h-14 py-3 cursor-pointer inline-flex sticky md:mx-2 text-white"
+            onClick={login}
+          />
+        )}
       </div>
     </header>
   );
