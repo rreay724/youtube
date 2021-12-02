@@ -119,7 +119,7 @@ function Comments({
               {numFormatter(likeCount)}
             </p>
           </div>
-          <div className="pt-3 pl-4">
+          <div className="pt-3 pl-4 flex">
             {disliked ? (
               <ThumbDownIcon
                 className="w-3 sm:w-5  text-white cursor-pointer"
@@ -131,10 +131,10 @@ function Comments({
                 onClick={handleDisikeClick}
               />
             )}
+            <p className="text-gray-400  text-mobileSm sm:text-xs  flex items-center pl-2">
+              REPLY
+            </p>
           </div>
-          <p className="items-bottom pt-3 pl-4 text-gray-400 text-mobileSm sm:text-xs cursor-pointer">
-            REPLY
-          </p>
         </div>
       </div>
     </div>

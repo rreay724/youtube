@@ -40,7 +40,7 @@ function VideoThumbnail({
           },
         });
       }}
-      className="cursor-pointer transition duration-200 ease-out active:bg-black-superLight mx-auto ml-4"
+      className="cursor-pointer transition duration-200 ease-out active:bg-black-superLight mx-auto ml-4 py-5"
     >
       <Image src={thumbnail} width={thumbnailWidth} height={thumbnailHeight} />
       <div className="w-80">
