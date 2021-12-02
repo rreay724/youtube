@@ -95,7 +95,7 @@ function Header() {
           value={searchInput}
           type="text"
           //   placeholder={placeholder ? placeholder : "Start your search"}
-          className="text-gray-300 flex-grow pl-2 bg-black-medium outline-none text-lg placeholder-gray-500 h-9 "
+          className="text-gray-300 flex-grow pl-2 bg-black-medium outline-none text-lg placeholder-gray-500 h-9 w-12"
           placeholder="Search"
           onKeyDown={(e) => {
             if (e.code === "Enter") {
