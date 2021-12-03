@@ -39,7 +39,7 @@ function videoPage({ data, comments }) {
 
   let viewInt = parseInt(viewCount.replaceAll(",", ""));
   let likeInt = parseInt(likeCount.replaceAll(",", ""));
-  let disLikeInt = parseInt(dislikeCount.replaceAll(",", ""));
+  // let disLikeInt = parseInt(dislikeCount.replaceAll(",", ""));
 
   const showMore = () => {
     if (textSnippet === false) {
