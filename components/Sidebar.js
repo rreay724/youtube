@@ -9,10 +9,20 @@ import {
 import { getAuth } from "firebase/auth";
 
 function Sidebar() {
-  const auth = getAuth();
-  const user = auth.currentUser;
   const router = useRouter();
-  console.log(user);
+
+  const handleHistoryClick = () => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (user) {
+      router.push({
+        pathname: "/historyPage",
+        query: { user: user.uid },
+      });
+    }
+  };
+
   return (
     <div
       className=" pt-2 xl:w-64 bg-black-light hidden sm:inline-block md:inline-block 
@@ -39,20 +49,14 @@ function Sidebar() {
         <div className="border-b w-16 xl:w-56 pt-4 border-gray-700" />
       </div>
       <div className="w-full pt-4">
-        {user ? (
-          <div
-            className="xl:sidebarComponent smallSidebarComponent"
-            onClick={() => {
-              router.push({
-                pathname: "/historyPage",
-                query: { user: user.uid },
-              });
-            }}
-          >
-            <ClockIcon className="w-10 p-2 mx-auto xl:mx-0" />
-            <p className="text-mobileSm xl:pl-5 xl:text-sm">History</p>
-          </div>
-        ) : null}
+        <div
+          className="xl:sidebarComponent smallSidebarComponent"
+          onClick={handleHistoryClick}
+        >
+          <ClockIcon className="w-10 p-2 mx-auto xl:mx-0" />
+          <p className="text-mobileSm xl:pl-5 xl:text-sm">History</p>
+        </div>
+        )
       </div>
     </div>
   );

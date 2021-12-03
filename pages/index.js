@@ -2,11 +2,7 @@ import Head from "next/head";
 
 import { Header, Sidebar, VideoThumbnail } from "../components/index";
 
-import { getAuth } from "firebase/auth";
-
 export default function Home({ data }) {
-  const auth = getAuth();
-  const user = auth.currentUser;
   return (
     <div className=" bg-black-medium min-h-screen">
       <Head>
@@ -17,7 +13,7 @@ export default function Home({ data }) {
 
       <div className="flex h-screen">
         <div className="sticky inset-y-0">
-          <Sidebar currentUser={user} />
+          <Sidebar />
         </div>
 
         <main className="flex-grow mt-8 pr-5 pl-5 overflow-scroll grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6 scrollbar-hide ">
