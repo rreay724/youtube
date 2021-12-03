@@ -31,6 +31,22 @@ function VideoThumbnail({
   const auth = getAuth();
   const user = auth.currentUser;
 
+  async function sendDoc() {
+    await setDoc(doc(db, user?.uid, id), {
+      userId: user.uid,
+      videoId: id,
+      thumbnail: thumbnail,
+      title: title,
+      channelTitle: channelTitle,
+      viewCount: viewCount,
+      publishedAt: publishedAt,
+      date: today,
+      thumbnailWidth: thumbnailWidth,
+      thumbnailHeight: thumbnailHeight,
+      description: description,
+    });
+  }
+
   return (
     <div
       onClick={() => {
@@ -41,7 +57,6 @@ function VideoThumbnail({
             title: title,
             viewCount: viewCount,
             commentCount: commentCount,
-            dislikeCount: dislikeCount,
             likeCount: likeCount,
             publishedAt: publishedAt,
             embedHtml: embedHtml,
@@ -49,17 +64,9 @@ function VideoThumbnail({
             description: description,
           },
         });
-
-        setDoc(doc(db, user.uid, id), {
-          userId: user.uid,
-          videoId: id,
-          thumbnail: thumbnail,
-          title: title,
-          channelTitle: channelTitle,
-          viewCount: viewCount,
-          publishedAt: publishedAt,
-          date: today,
-        });
+        {
+          user ? sendDoc() : null;
+        }
       }}
       className="cursor-pointer transition duration-200 ease-out active:bg-black-superLight mx-auto ml-4 py-5"
     >
