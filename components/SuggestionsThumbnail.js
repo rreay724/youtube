@@ -27,16 +27,16 @@ function SuggestionsThumbnail({
             id: id,
           },
         });
-        setDoc(doc(db, user.uid, id), {
-          userId: user.uid,
-          videoId: id,
-          thumbnail: thumbnail,
-          title: title,
-          channelTitle: channelTitle,
-          viewCount: viewCount,
-          publishedAt: publishedAt,
-          date: today,
-        });
+        // setDoc(doc(db, user.uid, id), {
+        //   userId: user.uid,
+        //   videoId: id,
+        //   thumbnail: thumbnail,
+        //   title: title,
+        //   channelTitle: channelTitle,
+        //   viewCount: viewCount,
+        //   publishedAt: publishedAt,
+        //   date: today,
+        // });
       }}
     >
       <div className="flex-none">

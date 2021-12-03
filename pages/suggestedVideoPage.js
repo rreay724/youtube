@@ -140,17 +140,15 @@ function suggestedVideoPage({ data, comments, suggested }) {
           <div className="border-b border-gray-700" />
           <div className="text-white text-left py-5 w-8/12">
             <h3 className="font-semibold text-sm">
-              {searchVideo.items[0]?.snippet.channelTitle}
+              {data.items[0]?.snippet.channelTitle}
             </h3>
-            {searchVideo.items[0]?.snippet.description.length > 700 ? (
+            {data.items[0]?.snippet.description.length > 700 ? (
               <>
                 <p className="pt-4 text-xs">
                   {textSnippet === false
-                    ? searchVideo.items[0]?.snippet.description.substring(
-                        0,
-                        700
-                      ) + "..."
-                    : searchVideo.items[0]?.snippet.description}
+                    ? data.items[0]?.snippet.description.substring(0, 700) +
+                      "..."
+                    : data.items[0]?.snippet.description}
                 </p>
                 <p
                   className="text-gray-400 cursor-pointer text-mobileSm sm:text-xs pt-2"
@@ -161,7 +159,7 @@ function suggestedVideoPage({ data, comments, suggested }) {
               </>
             ) : (
               <p className="pt-4 text-xs">
-                {searchVideo.items[0]?.snippet.description}
+                {data.items[0]?.snippet.description}
               </p>
             )}
           </div>
