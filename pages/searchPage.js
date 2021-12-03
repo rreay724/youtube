@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/dist/client/router";
 
-import { Header, Sidebar, SearchThumbnail } from "../components/index";
+import { Header, Sidebar, HistoryThumbnail } from "../components/index";
 
 export default function searchPage({ data }) {
   const router = useRouter();
@@ -23,7 +23,7 @@ export default function searchPage({ data }) {
           <section className="mt-5">
             {!data.error ? (
               data.items?.map((item) => (
-                <SearchThumbnail
+                <HistoryThumbnail
                   key={item.id.videoId}
                   id={item.id.videoId}
                   thumbnail={item.snippet.thumbnails.medium.url}

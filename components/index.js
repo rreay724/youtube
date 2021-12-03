@@ -6,3 +6,4 @@ export { default as Suggestions } from "./Suggestions";
 export { default as CommentSection } from "./CommentSection";
 export { default as SuggestionsThumbnail } from "./SuggestionsThumbnail";
 export { default as Comments } from "./Comments";
+export { default as HistoryThumbnail } from "./HistoryThumbnail";
