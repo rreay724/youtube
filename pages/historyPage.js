@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Head from "next/head";
 import { useRouter } from "next/dist/client/router";
 import {
@@ -12,13 +12,10 @@ import { getAuth } from "firebase/auth";
 
 import { Header, Sidebar, SearchThumbnail } from "../components/index";
 
-export default function historyPage({ historyData }) {
-  //   const auth = getAuth();
-  //   const user = auth.currentUser;
+export default function historyPage({ historyJson }) {
   const router = useRouter();
   const { user } = router.query;
-
-  console.log("historyData", historyData);
+  const historyData = JSON.parse(historyJson);
 
   return (
     <div className=" bg-black-medium min-h-screen">
@@ -54,19 +51,16 @@ export default function historyPage({ historyData }) {
   );
 }
 
-historyPage.getInitialProps = async () => {
+export async function getServerSideProps(context) {
+  const { user } = context.query;
   const db = getFirestore();
   let historyData = [];
 
-  const querySnapshot = await getDocs(
-    collection(db, "HUPnQh5mlbM6JfilLPys0XZHVXR2")
-  );
+  const querySnapshot = await getDocs(collection(db, user));
   querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
     historyData.push(doc.data());
   });
+  const historyJson = JSON.stringify(historyData);
 
-  console.log(historyData);
-
-  return { historyData: historyData };
-};
+  return { props: { historyJson } };
+}

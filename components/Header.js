@@ -64,7 +64,8 @@ function Header() {
   const logout = () => {
     signOut(auth)
       .then(() => {
-        router.reload(window.location.pathname);
+        router.push({ pathname: "/" });
+        // router.reload(window.location.pathname);
       })
       .catch((error) => {
         console.log("Error logging out: ", error);
