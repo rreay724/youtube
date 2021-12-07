@@ -33,6 +33,7 @@ export default function historyPage({ historyJson }) {
           <section className="mt-5">
             {historyData?.map((item) => (
               <HistoryThumbnail
+                user={user}
                 key={item?.videoId}
                 id={item?.videoId}
                 thumbnail={item?.thumbnail}

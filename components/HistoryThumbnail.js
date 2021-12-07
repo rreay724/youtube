@@ -15,6 +15,7 @@ function HistoryThumbnail({
   viewCount,
   embedHtml,
   channelId,
+  user,
 }) {
   const router = useRouter();
 
@@ -42,6 +43,7 @@ function HistoryThumbnail({
             likeCount: likeCount,
             viewCount: viewCount,
             embedHtml: embedHtml,
+            user: user,
           },
         });
       }}
