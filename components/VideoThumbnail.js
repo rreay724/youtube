@@ -64,6 +64,7 @@ function VideoThumbnail({
             channelTitle: channelTitle,
             description: description,
             channelId: channelId,
+            userId: user?.uid,
           },
         });
         {

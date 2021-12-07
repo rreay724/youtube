@@ -8,14 +8,21 @@ import {
   SaveIcon,
 } from "@heroicons/react/outline";
 import { ThumbUpIcon, ThumbDownIcon } from "@heroicons/react/solid";
-import { doc, setDoc, getFirestore, deleteDoc } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  getFirestore,
+  deleteDoc,
+  getDoc,
+} from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 // Notes: needs description, subscriber counts, channel image, show more, show less for descrption, bell icon and subscribe button
 
-function videoPage({ data, comments }) {
+function videoPage({ data, comments, subExists, className, subscribeText }) {
   const router = useRouter();
   const db = getFirestore();
+  console.log("exists", subExists);
 
   const {
     id,
@@ -29,17 +36,16 @@ function videoPage({ data, comments }) {
     description,
     channelTitle,
     channelId,
+    userId,
   } = router.query;
 
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
   const [readShow, setReadShow] = useState("SHOW MORE");
   const [textSnippet, setTextSnippet] = useState(false);
-  const [subscribe, setSubscribe] = useState("SUBSCRIBE");
-  const [subscribed, setSubscribed] = useState(false);
-  const [subscribeClassName, setSubscribeClassName] = useState(
-    "border border-red-600 bg-red-600 text-white text-xs w-24 h-8 rounded-sm cursor-pointer"
-  );
+  const [subscribe, setSubscribe] = useState(subscribeText);
+  const [subscribed, setSubscribed] = useState(subExists);
+  const [subscribeClassName, setSubscribeClassName] = useState(className);
 
   const date = new Date(publishedAt);
   const month = date.toString().split(" ")[1];
@@ -74,7 +80,7 @@ function videoPage({ data, comments }) {
         setSubscribe("SUBSCRIBE");
       }
 
-      if (subscribed === false) {
+      if (subExists === false) {
         setSubscribed(true);
 
         // firebase function to send channel title and id
@@ -88,9 +94,9 @@ function videoPage({ data, comments }) {
         setSubscribeClassName(
           "border border-black-superLight bg-black-superLight text-black-superDuperLight text-xs w-24 h-8 rounded-sm cursor-pointer"
         );
-      } else if (subscribed === true) {
+        router.reload(window.location.pathname);
+      } else if (subExists === true) {
         setSubscribed(false);
-
         //firebase function to delete channel title and id
         await deleteDoc(
           doc(db, user?.uid, "subscriptions", "channels", channelId)
@@ -98,6 +104,7 @@ function videoPage({ data, comments }) {
         setSubscribeClassName(
           "border border-red-600 bg-red-600 text-white text-xs w-24 h-8 rounded-sm cursor-pointer"
         );
+        router.reload(window.location.pathname);
       }
     } else {
       // add toast message here
@@ -238,7 +245,29 @@ function videoPage({ data, comments }) {
 export default videoPage;
 
 export async function getServerSideProps(context) {
-  const { id, channelId } = context.query;
+  const db = getFirestore();
+  const { id, channelId, userId } = context.query;
+
+  let subExists = false;
+  let className = "";
+  let subscribeText = "";
+  if (userId) {
+    const docRef = doc(db, userId, "subscriptions", "channels", channelId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      subExists = true;
+      subscribeText = "SUBSCRIBED";
+      className =
+        "border border-black-superLight bg-black-superLight text-black-superDuperLight text-xs w-24 h-8 rounded-sm cursor-pointer";
+    } else {
+      subExists = false;
+      subscribeText = "SUBSCRIBE";
+      className =
+        "border border-red-600 bg-red-600 text-white text-xs w-24 h-8 rounded-sm cursor-pointer";
+    }
+  }
+
   const data = await fetch(
     `https://youtube.googleapis.com/youtube/v3/search?relatedToVideoId=${id}&part=id&part=snippet&maxResults=50&type=video&key=${process.env.NEXT_PUBLIC_API_KEY}`
   ).then((res) => res.json());
@@ -251,6 +280,9 @@ export async function getServerSideProps(context) {
     props: {
       data,
       comments,
+      subExists,
+      className,
+      subscribeText,
     },
   };
 }
