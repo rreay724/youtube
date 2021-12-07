@@ -22,7 +22,6 @@ import { getAuth } from "firebase/auth";
 function videoPage({ data, comments, subExists, className, subscribeText }) {
   const router = useRouter();
   const db = getFirestore();
-  console.log("exists", subExists);
 
   const {
     id,
