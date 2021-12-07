@@ -43,8 +43,8 @@ function historyVideoPage({ data, comments }) {
   const year = date.toString().split(" ")[3];
   const formattedViewCount = Number(viewCount).toLocaleString();
 
-  let viewInt = parseInt(viewCount.replaceAll(",", ""));
-  let likeInt = parseInt(likeCount.replaceAll(",", ""));
+  let viewInt = parseInt(viewCount.replace(/,/g, ""));
+  let likeInt = parseInt(likeCount.replace(/,/g, ""));
 
   const showMore = () => {
     if (textSnippet === false) {

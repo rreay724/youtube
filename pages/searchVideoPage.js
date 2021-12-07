@@ -36,10 +36,10 @@ function searchVideoPage({ data, comments, searchVideo }) {
     ).toLocaleString();
 
     let viewInt = parseInt(
-      searchVideo.items[0]?.statistics.viewCount.replaceAll(",", "")
+      searchVideo.items[0]?.statistics.viewCount.replace(/,/g, "")
     );
     let likeInt = parseInt(
-      searchVideo.items[0]?.statistics.likeCount.replaceAll(",", "")
+      searchVideo.items[0]?.statistics.likeCount.replace(/,/g, "")
     );
   } else {
   }

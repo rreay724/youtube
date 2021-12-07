@@ -28,9 +28,7 @@ function suggestedVideoPage({ data, comments, suggested }) {
     data.items[0]?.statistics.viewCount
   ).toLocaleString();
 
-  let viewInt = parseInt(
-    data.items[0]?.statistics.viewCount.replaceAll(",", "")
-  );
+  let viewInt = parseInt(data.items[0]?.statistics.viewCount.replace(/,/g, ""));
 
   const showMore = () => {
     if (textSnippet === false) {
