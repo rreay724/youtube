@@ -14,12 +14,8 @@ import { ThumbUpIcon, ThumbDownIcon } from "@heroicons/react/solid";
 function searchVideoPage({ data, comments, searchVideo }) {
   const router = useRouter();
 
-  console.log(searchVideo);
-
   const { id, title, viewCount, dislikeCount, likeCount, publishedAt } =
     router.query;
-
-  console.log(id);
 
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);

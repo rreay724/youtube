@@ -32,7 +32,6 @@ function SuggestionsThumbnail({
         `https://youtube.googleapis.com/youtube/v3/videos?part=snippet&part=statistics&part=player&id=${id}&key=${process.env.NEXT_PUBLIC_API_KEY}`
       ).then((res) => res.json());
       const db = getFirestore();
-      console.log(data);
 
       setDoc(doc(db, user.uid, "history", "videos", id), {
         userId: user.uid,

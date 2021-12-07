@@ -13,11 +13,9 @@ import { getAuth } from "firebase/auth";
 import { Header, Sidebar, HistoryThumbnail } from "../components/index";
 
 export default function historyPage({ historyJson }) {
-  console.log(historyJson);
   const router = useRouter();
   const { user } = router.query;
   const historyData = JSON.parse(historyJson);
-  console.log(historyData);
 
   return (
     <div className=" bg-black-medium min-h-screen">

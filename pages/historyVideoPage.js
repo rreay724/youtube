@@ -30,8 +30,6 @@ function historyVideoPage({ data, comments }) {
     channelId,
   } = router.query;
 
-  console.log(id);
-
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
   const [readShow, setReadShow] = useState("SHOW MORE");
