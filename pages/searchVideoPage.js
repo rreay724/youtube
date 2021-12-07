@@ -14,27 +14,35 @@ import { ThumbUpIcon, ThumbDownIcon } from "@heroicons/react/solid";
 function searchVideoPage({ data, comments, searchVideo }) {
   const router = useRouter();
 
+  console.log(searchVideo);
+
   const { id, title, viewCount, dislikeCount, likeCount, publishedAt } =
     router.query;
+
+  console.log(id);
 
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
   const [readShow, setReadShow] = useState("SHOW MORE");
   const [textSnippet, setTextSnippet] = useState(false);
-  const date = new Date(searchVideo.items[0].snippet.publishedAt);
-  const month = date.toString().split(" ")[1];
-  const day = date.toString().split(" ")[2];
-  const year = date.toString().split(" ")[3];
-  const formattedViewCount = Number(
-    searchVideo.items[0]?.statistics.viewCount
-  ).toLocaleString();
+  if (!searchVideo.error && searchVideo.items) {
+    const date = new Date(searchVideo.items[0].snippet.publishedAt);
+    const month = date.toString().split(" ")[1];
+    const day = date.toString().split(" ")[2];
 
-  let viewInt = parseInt(
-    searchVideo.items[0]?.statistics.viewCount.replaceAll(",", "")
-  );
-  let likeInt = parseInt(
-    searchVideo.items[0]?.statistics.likeCount.replaceAll(",", "")
-  );
+    const year = date.toString().split(" ")[3];
+    const formattedViewCount = Number(
+      searchVideo.items[0]?.statistics.viewCount
+    ).toLocaleString();
+
+    let viewInt = parseInt(
+      searchVideo.items[0]?.statistics.viewCount.replaceAll(",", "")
+    );
+    let likeInt = parseInt(
+      searchVideo.items[0]?.statistics.likeCount.replaceAll(",", "")
+    );
+  } else {
+  }
 
   const showMore = () => {
     if (textSnippet === false) {
@@ -81,107 +89,113 @@ function searchVideoPage({ data, comments, searchVideo }) {
   return (
     <div className="bg-black-medium min-h-screen">
       <Header />
-      <div className="flex">
-        <main className="items-center justify-center w-full px-5 lg:pr-0 pt-5 text-center overflow-scroll scrollbar-hide">
-          <div>
-            <div
-              className="aspect-w-14 aspect-h-7"
-              dangerouslySetInnerHTML={{
-                __html: `${searchVideo.items[0]?.player.embedHtml}`,
-              }}
-            />
-          </div>
-          <div className="h-18 sm:h-24 pb-2 lg:pb-20">
-            <div className="pt-2 sm:pt-4 text-left">
-              <h2 className="text-white sm:text-xl pb-3 w-full text-mobileSm">
-                {searchVideo.items[0]?.snippet.title}
-              </h2>
+      {!searchVideo.error && searchVideo.items ? (
+        <div className="flex">
+          <main className="items-center justify-center w-full px-5 lg:pr-0 pt-5 text-center overflow-scroll scrollbar-hide">
+            <div>
+              <div
+                className="aspect-w-14 aspect-h-7"
+                dangerouslySetInnerHTML={{
+                  __html: `${searchVideo.items[0]?.player.embedHtml}`,
+                }}
+              />
             </div>
-            <div className="flex text-white items-center justify-end sm:mr-10 lg:mr-0 w-full ">
-              <p className="text-mobileSm8 sm:text-sm text-gray-400 w-full text-left">
-                {numFormatter(viewInt)} views ·{" "}
-                {month + " " + day + ", " + year}
-              </p>
-              <p className="flex items-center text-mobileSm sm:text-sm">
-                {liked ? (
-                  <ThumbUpIcon
-                    onClick={handleLikeClick}
-                    className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer"
-                  />
-                ) : (
-                  <ThumbUpOutline
-                    onClick={handleLikeClick}
-                    className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer"
-                  />
-                )}
+            <div className="h-18 sm:h-24 pb-2 lg:pb-20">
+              <div className="pt-2 sm:pt-4 text-left">
+                <h2 className="text-white sm:text-xl pb-3 w-full text-mobileSm">
+                  {searchVideo.items[0]?.snippet.title}
+                </h2>
+              </div>
+              <div className="flex text-white items-center justify-end sm:mr-10 lg:mr-0 w-full ">
+                <p className="text-mobileSm8 sm:text-sm text-gray-400 w-full text-left">
+                  {numFormatter(viewInt)} views ·{" "}
+                  {month + " " + day + ", " + year}
+                </p>
+                <p className="flex items-center text-mobileSm sm:text-sm">
+                  {liked ? (
+                    <ThumbUpIcon
+                      onClick={handleLikeClick}
+                      className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer"
+                    />
+                  ) : (
+                    <ThumbUpOutline
+                      onClick={handleLikeClick}
+                      className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer"
+                    />
+                  )}
 
-                {numFormatter(likeInt)}
-              </p>
-              <p className="flex pl-4  items-center text-mobileSm sm:text-sm">
-                {disliked ? (
-                  <ThumbDownIcon
-                    onClick={handleDisikeClick}
-                    className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer"
-                  />
-                ) : (
-                  <ThumbDownOutline
-                    onClick={handleDisikeClick}
-                    className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer"
-                  />
-                )}
-                DISLIKE
-              </p>
-              <p className="flex pl-4  items-center cursor-pointer text-mobileSm sm:text-sm">
-                <ShareIcon className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer" />{" "}
-                SHARE
-              </p>
-              <p className="flex pl-4 items-center cursor-pointer text-mobileSm sm:text-sm">
-                <SaveIcon className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer item-top" />{" "}
-                SAVE
-              </p>
+                  {numFormatter(likeInt)}
+                </p>
+                <p className="flex pl-4  items-center text-mobileSm sm:text-sm">
+                  {disliked ? (
+                    <ThumbDownIcon
+                      onClick={handleDisikeClick}
+                      className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer"
+                    />
+                  ) : (
+                    <ThumbDownOutline
+                      onClick={handleDisikeClick}
+                      className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer"
+                    />
+                  )}
+                  DISLIKE
+                </p>
+                <p className="flex pl-4  items-center cursor-pointer text-mobileSm sm:text-sm">
+                  <ShareIcon className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer" />{" "}
+                  SHARE
+                </p>
+                <p className="flex pl-4 items-center cursor-pointer text-mobileSm sm:text-sm">
+                  <SaveIcon className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer item-top" />{" "}
+                  SAVE
+                </p>
+              </div>
             </div>
-          </div>
-          <div className="border-b border-gray-700" />
-          <div className="text-white text-left py-5 w-8/12">
-            <h3 className="font-semibold text-sm">
-              {searchVideo.items[0]?.snippet.channelTitle}
-            </h3>
-            {searchVideo.items[0]?.snippet.description.length > 700 ? (
-              <>
+            <div className="border-b border-gray-700" />
+            <div className="text-white text-left py-5 w-8/12">
+              <h3 className="font-semibold text-sm">
+                {searchVideo.items[0]?.snippet.channelTitle}
+              </h3>
+              {searchVideo.items[0]?.snippet.description.length > 700 ? (
+                <>
+                  <p className="pt-4 text-xs">
+                    {textSnippet === false
+                      ? searchVideo.items[0]?.snippet.description.substring(
+                          0,
+                          700
+                        ) + "..."
+                      : searchVideo.items[0]?.snippet.description}
+                  </p>
+                  <p
+                    className="text-gray-400 cursor-pointer text-mobileSm sm:text-xs pt-2"
+                    onClick={showMore}
+                  >
+                    {readShow}
+                  </p>
+                </>
+              ) : (
                 <p className="pt-4 text-xs">
-                  {textSnippet === false
-                    ? searchVideo.items[0]?.snippet.description.substring(
-                        0,
-                        700
-                      ) + "..."
-                    : searchVideo.items[0]?.snippet.description}
+                  {searchVideo.items[0]?.snippet.description}
                 </p>
-                <p
-                  className="text-gray-400 cursor-pointer text-mobileSm sm:text-xs pt-2"
-                  onClick={showMore}
-                >
-                  {readShow}
-                </p>
-              </>
-            ) : (
-              <p className="pt-4 text-xs">
-                {searchVideo.items[0]?.snippet.description}
-              </p>
-            )}
-          </div>
-          <div className="border-b border-gray-700" />
+              )}
+            </div>
+            <div className="border-b border-gray-700" />
 
-          <div>
-            <CommentSection
-              comments={comments}
-              commentCount={searchVideo.items[0]?.statistics.commentCount}
-            />
-          </div>
+            <div>
+              <CommentSection
+                comments={comments}
+                commentCount={searchVideo.items[0]?.statistics.commentCount}
+              />
+            </div>
 
-          {/* <div className=" border-b border-gray-700 h-5" /> */}
-        </main>
-        <Suggestions data={data} />
-      </div>
+            {/* <div className=" border-b border-gray-700 h-5" /> */}
+          </main>
+          <Suggestions data={data} />
+        </div>
+      ) : (
+        <h1 className="text-white text-center pt-64">
+          API limit reached. Unable to display video.
+        </h1>
+      )}
     </div>
   );
 }
