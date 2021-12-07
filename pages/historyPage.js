@@ -13,9 +13,11 @@ import { getAuth } from "firebase/auth";
 import { Header, Sidebar, HistoryThumbnail } from "../components/index";
 
 export default function historyPage({ historyJson }) {
+  console.log(historyJson);
   const router = useRouter();
   const { user } = router.query;
   const historyData = JSON.parse(historyJson);
+  console.log(historyData);
 
   return (
     <div className=" bg-black-medium min-h-screen">
@@ -36,12 +38,17 @@ export default function historyPage({ historyJson }) {
                 key={item?.videoId}
                 id={item?.videoId}
                 thumbnail={item?.thumbnail}
-                thumbnailWidth={item.thumbnailWidth}
-                thumbnailHeight={item.thumbnailHeight}
-                description={item.description}
+                thumbnailWidth={item?.thumbnailWidth}
+                thumbnailHeight={item?.thumbnailHeight}
+                description={item?.description}
                 channelTitle={item?.channelTitle}
                 title={item?.title}
                 publishedAt={item?.publishedAt}
+                commentCount={item?.commentCount}
+                likeCount={item?.likeCount}
+                viewCount={item?.viewCount}
+                embedHtml={item?.embedHtml}
+                channelId={item?.channelId}
               />
             ))}
           </section>

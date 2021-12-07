@@ -39,12 +39,18 @@ function VideoThumbnail({
       thumbnail: thumbnail,
       title: title,
       channelTitle: channelTitle,
+      channelId: channelId,
       viewCount: viewCount,
       publishedAt: publishedAt,
       date: today,
       thumbnailWidth: thumbnailWidth,
       thumbnailHeight: thumbnailHeight,
       description: description,
+      commentCount: commentCount,
+      dislikeCount: dislikeCount,
+      likeCount: likeCount,
+      viewCount: viewCount,
+      embedHtml: embedHtml,
     });
   }
 
