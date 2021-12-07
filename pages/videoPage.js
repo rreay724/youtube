@@ -51,9 +51,8 @@ function videoPage({ data, comments, subExists, className, subscribeText }) {
   const day = date.toString().split(" ")[2];
   const year = date.toString().split(" ")[3];
 
-  let viewInt = parseInt(viewCount.replaceAll(",", ""));
-  let likeInt = parseInt(likeCount.replaceAll(",", ""));
-  // let disLikeInt = parseInt(dislikeCount.replaceAll(",", ""));
+  let viewInt = parseInt(viewCount.replace(/,/g, ""));
+  let likeInt = parseInt(likeCount.replace(/,/g, ""));
 
   const showMore = () => {
     if (textSnippet === false) {
