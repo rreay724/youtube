@@ -18,6 +18,7 @@ function VideoThumbnail({
   viewCount,
   publishedAt,
   embedHtml,
+  channelId,
 }) {
   const router = useRouter();
   const descriptionSnippet = description.substring(0, 150) + "...";
@@ -32,7 +33,7 @@ function VideoThumbnail({
   const user = auth.currentUser;
 
   async function sendDoc() {
-    await setDoc(doc(db, user?.uid, id), {
+    await setDoc(doc(db, user?.uid, "history", "videos", id), {
       userId: user.uid,
       videoId: id,
       thumbnail: thumbnail,
@@ -62,6 +63,7 @@ function VideoThumbnail({
             embedHtml: embedHtml,
             channelTitle: channelTitle,
             description: description,
+            channelId: channelId,
           },
         });
         {

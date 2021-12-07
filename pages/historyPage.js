@@ -10,7 +10,7 @@ import {
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
-import { Header, Sidebar, SearchThumbnail } from "../components/index";
+import { Header, Sidebar, HistoryThumbnail } from "../components/index";
 
 export default function historyPage({ historyJson }) {
   const router = useRouter();
@@ -32,7 +32,7 @@ export default function historyPage({ historyJson }) {
         <main className="items-center justify-center w-full pl-5 text-center overflow-y-scroll">
           <section className="mt-5">
             {historyData?.map((item) => (
-              <SearchThumbnail
+              <HistoryThumbnail
                 key={item?.videoId}
                 id={item?.videoId}
                 thumbnail={item?.thumbnail}
@@ -56,7 +56,9 @@ export async function getServerSideProps(context) {
   const db = getFirestore();
   let historyData = [];
 
-  const querySnapshot = await getDocs(collection(db, user));
+  const querySnapshot = await getDocs(
+    collection(db, user, "history", "videos")
+  );
   querySnapshot.forEach((doc) => {
     historyData.push(doc.data());
   });

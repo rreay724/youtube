@@ -8,11 +8,14 @@ import {
   SaveIcon,
 } from "@heroicons/react/outline";
 import { ThumbUpIcon, ThumbDownIcon } from "@heroicons/react/solid";
+import { doc, setDoc, getFirestore, deleteDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 // Notes: needs description, subscriber counts, channel image, show more, show less for descrption, bell icon and subscribe button
 
 function videoPage({ data, comments }) {
   const router = useRouter();
+  const db = getFirestore();
 
   const {
     id,
@@ -25,12 +28,18 @@ function videoPage({ data, comments }) {
     commentCount,
     description,
     channelTitle,
+    channelId,
   } = router.query;
 
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
   const [readShow, setReadShow] = useState("SHOW MORE");
   const [textSnippet, setTextSnippet] = useState(false);
+  const [subscribe, setSubscribe] = useState("SUBSCRIBE");
+  const [subscribed, setSubscribed] = useState(false);
+  const [subscribeClassName, setSubscribeClassName] = useState(
+    "border border-red-600 bg-red-600 text-white text-xs w-24 h-8 rounded-sm cursor-pointer"
+  );
 
   const date = new Date(publishedAt);
   const month = date.toString().split(" ")[1];
@@ -53,6 +62,44 @@ function videoPage({ data, comments }) {
       setReadShow("SHOW MORE");
     }
   };
+
+  async function subscribeClick() {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (user) {
+      if (subscribe === "SUBSCRIBE") {
+        setSubscribe("SUBSCRIBED");
+      } else if (subscribe === "SUBSCRIBED") {
+        setSubscribe("SUBSCRIBE");
+      }
+
+      if (subscribed === false) {
+        setSubscribed(true);
+
+        // firebase function to send channel title and id
+        await setDoc(
+          doc(db, user?.uid, "subscriptions", "channels", channelId),
+          {
+            channelId: channelId,
+            channelTitle: channelTitle,
+          }
+        );
+        setSubscribeClassName(
+          "border border-black-superLight bg-black-superLight text-black-superDuperLight text-xs w-24 h-8 rounded-sm cursor-pointer"
+        );
+      } else if (subscribed === true) {
+        setSubscribed(false);
+
+        //firebase function to delete channel title and id
+        await deleteDoc(
+          doc(db, user?.uid, "subscriptions", "channels", channelId)
+        );
+        setSubscribeClassName(
+          "border border-red-600 bg-red-600 text-white text-xs w-24 h-8 rounded-sm cursor-pointer"
+        );
+      }
+    }
+  }
 
   const numFormatter = (num) => {
     if (num > 999 && num < 1000000) {
@@ -145,25 +192,32 @@ function videoPage({ data, comments }) {
             </div>
           </div>
           <div className="border-b border-gray-700" />
-          <div className="text-white text-left py-5 w-8/12">
-            <h3 className="font-semibold text-sm">{channelTitle}</h3>
-            {description.length > 700 ? (
-              <>
-                <p className="pt-4 text-xs">
-                  {textSnippet === false
-                    ? description.substring(0, 700) + "..."
-                    : description}
-                </p>
-                <p
-                  className="text-gray-400 cursor-pointer text-mobileSm sm:text-xs pt-2"
-                  onClick={showMore}
-                >
-                  {readShow}
-                </p>
-              </>
-            ) : (
-              <p className="pt-4 text-xs">{description}</p>
-            )}
+          <div className="text-white text-left py-5 w-full flex flex-col-2">
+            <div className="w-8/12">
+              <h3 className="font-semibold text-sm">{channelTitle}</h3>
+              {description.length > 700 ? (
+                <>
+                  <p className="pt-4 text-xs">
+                    {textSnippet === false
+                      ? description.substring(0, 700) + "..."
+                      : description}
+                  </p>
+                  <p
+                    className="text-gray-400 cursor-pointer text-mobileSm sm:text-xs pt-2"
+                    onClick={showMore}
+                  >
+                    {readShow}
+                  </p>
+                </>
+              ) : (
+                <p className="pt-4 text-xs">{description}</p>
+              )}
+            </div>
+            <div className="w-6/12 text-right">
+              <button className={subscribeClassName} onClick={subscribeClick}>
+                {subscribe}
+              </button>
+            </div>
           </div>
           <div className="border-b border-gray-700" />
           <div>
