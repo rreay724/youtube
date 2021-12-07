@@ -10,12 +10,14 @@ import {
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
-import { Header, Sidebar, SearchThumbnail } from "../components/index";
+import { Header, Sidebar, HistoryThumbnail } from "../components/index";
 
 export default function historyPage({ historyJson }) {
+  console.log(historyJson);
   const router = useRouter();
   const { user } = router.query;
   const historyData = JSON.parse(historyJson);
+  console.log(historyData);
 
   return (
     <div className=" bg-black-medium min-h-screen">
@@ -32,16 +34,21 @@ export default function historyPage({ historyJson }) {
         <main className="items-center justify-center w-full pl-5 text-center overflow-y-scroll">
           <section className="mt-5">
             {historyData?.map((item) => (
-              <SearchThumbnail
+              <HistoryThumbnail
                 key={item?.videoId}
                 id={item?.videoId}
                 thumbnail={item?.thumbnail}
-                thumbnailWidth={item.thumbnailWidth}
-                thumbnailHeight={item.thumbnailHeight}
-                description={item.description}
+                thumbnailWidth={item?.thumbnailWidth}
+                thumbnailHeight={item?.thumbnailHeight}
+                description={item?.description}
                 channelTitle={item?.channelTitle}
                 title={item?.title}
                 publishedAt={item?.publishedAt}
+                commentCount={item?.commentCount}
+                likeCount={item?.likeCount}
+                viewCount={item?.viewCount}
+                embedHtml={item?.embedHtml}
+                channelId={item?.channelId}
               />
             ))}
           </section>
@@ -56,7 +63,9 @@ export async function getServerSideProps(context) {
   const db = getFirestore();
   let historyData = [];
 
-  const querySnapshot = await getDocs(collection(db, user));
+  const querySnapshot = await getDocs(
+    collection(db, user, "history", "videos")
+  );
   querySnapshot.forEach((doc) => {
     historyData.push(doc.data());
   });

@@ -10,18 +10,38 @@ function HistoryThumbnail({
   thumbnailWidth,
   thumbnailHeight,
   publishedAt,
+  commentCount,
+  likeCount,
+  viewCount,
+  embedHtml,
+  channelId,
 }) {
   const router = useRouter();
 
   const descriptionSnippet = description.substring(0, 150) + "...";
+  let today = new Date();
 
   return (
     <div
       onClick={() => {
         router.push({
-          pathname: "/searchVideoPage",
+          pathname: "/historyVideoPage",
           query: {
             id: id,
+            thumbnail: thumbnail,
+            title: title,
+            channelTitle: channelTitle,
+            channelId: channelId,
+            viewCount: viewCount,
+            publishedAt: publishedAt,
+            date: today,
+            thumbnailWidth: thumbnailWidth,
+            thumbnailHeight: thumbnailHeight,
+            description: description,
+            commentCount: commentCount,
+            likeCount: likeCount,
+            viewCount: viewCount,
+            embedHtml: embedHtml,
           },
         });
       }}

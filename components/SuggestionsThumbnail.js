@@ -34,7 +34,7 @@ function SuggestionsThumbnail({
       const db = getFirestore();
       console.log(data);
 
-      setDoc(doc(db, user.uid, id), {
+      setDoc(doc(db, user.uid, "history", "videos", id), {
         userId: user.uid,
         videoId: data.items[0].id,
         thumbnail: data.items[0].snippet.thumbnails.medium.url,

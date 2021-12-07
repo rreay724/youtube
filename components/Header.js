@@ -48,7 +48,9 @@ function Header() {
         const user = result.user;
         // ...
       })
-      .then(() => {})
+      .then(() => {
+        router.push({ pathname: "/" });
+      })
       .catch((error) => {
         // Handle Errors here.
         const errorCode = error.code;
