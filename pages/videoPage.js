@@ -63,6 +63,7 @@ function videoPage({ data, comments }) {
     }
   };
 
+  // TODO:add toast message
   async function subscribeClick() {
     const auth = getAuth();
     const user = auth.currentUser;
@@ -98,6 +99,8 @@ function videoPage({ data, comments }) {
           "border border-red-600 bg-red-600 text-white text-xs w-24 h-8 rounded-sm cursor-pointer"
         );
       }
+    } else {
+      // add toast message here
     }
   }
 
@@ -235,7 +238,7 @@ function videoPage({ data, comments }) {
 export default videoPage;
 
 export async function getServerSideProps(context) {
-  const { id } = context.query;
+  const { id, channelId } = context.query;
   const data = await fetch(
     `https://youtube.googleapis.com/youtube/v3/search?relatedToVideoId=${id}&part=id&part=snippet&maxResults=50&type=video&key=${process.env.NEXT_PUBLIC_API_KEY}`
   ).then((res) => res.json());
