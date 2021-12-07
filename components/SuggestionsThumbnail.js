@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useRouter } from "next/dist/client/router";
 import { doc, setDoc, getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { isFuture } from "date-fns";
 
 function SuggestionsThumbnail({
   id,
@@ -12,20 +13,34 @@ function SuggestionsThumbnail({
   channelTitle,
   viewCount,
   publishedAt,
+  channelId,
 }) {
   // const titleSnippet = "";
   // title !== null && titleSnippet === title.substring(0, 50) + "...";
+
+  // TODO: need channelId
   const router = useRouter();
   let today = new Date();
   async function handleClick() {
     const auth = getAuth();
     const user = auth.currentUser;
-    router.push({
-      pathname: "/suggestedVideoPage",
-      query: {
-        id: id,
-      },
-    });
+    if (user) {
+      router.push({
+        pathname: "/suggestedVideoPage",
+        query: {
+          id: id,
+          channelId: channelId,
+          userId: user.uid,
+        },
+      });
+    } else {
+      router.push({
+        pathname: "/suggestedVideoPage",
+        query: {
+          id: id,
+        },
+      });
+    }
 
     if (user) {
       const data = await fetch(
@@ -39,6 +54,7 @@ function SuggestionsThumbnail({
         thumbnail: data.items[0].snippet.thumbnails.medium.url,
         title: data.items[0].snippet.title,
         channelTitle: data.items[0].snippet.channelTitle,
+        channelId: data.items[0].snippet.channelId,
         viewCount: data.items[0].statistics.viewCount,
         publishedAt: data.items[0].snippet.publishedAt,
         date: today,

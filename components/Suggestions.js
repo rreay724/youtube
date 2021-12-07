@@ -12,6 +12,7 @@ function Suggestions({ data }) {
             thumbnail={item.snippet?.thumbnails.medium.url}
             channelTitle={item.snippet?.channelTitle}
             publishedAt={item.snippet?.publishedAt}
+            channelId={item.snippet?.channelId}
           />
         ))
       ) : (

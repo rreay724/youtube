@@ -11,15 +11,25 @@ import { ThumbUpIcon, ThumbDownIcon } from "@heroicons/react/solid";
 
 // Notes: needs description, subscriber counts, channel image, show more, show less for descrption, bell icon and subscribe button
 
-function suggestedVideoPage({ data, comments, suggested }) {
+function suggestedVideoPage({
+  data,
+  comments,
+  suggested,
+  subExists,
+  className,
+  subscribeText,
+}) {
   const router = useRouter();
 
-  const { id } = router.query;
+  const { id, userId, channelId } = router.query;
 
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
   const [readShow, setReadShow] = useState("SHOW MORE");
   const [textSnippet, setTextSnippet] = useState(false);
+  const [subscribe, setSubscribe] = useState(subscribeText);
+  const [subscribed, setSubscribed] = useState(subExists);
+  const [subscribeClassName, setSubscribeClassName] = useState(className);
   const date = new Date(data.items[0]?.snippet.publishedAt);
   const month = date.toString().split(" ")[1];
   const day = date.toString().split(" ")[2];
@@ -70,6 +80,47 @@ function suggestedVideoPage({ data, comments, suggested }) {
       setDisliked(false);
     }
   };
+
+  async function subscribeClick() {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (user) {
+      if (subscribe === "SUBSCRIBE") {
+        setSubscribe("SUBSCRIBED");
+      } else if (subscribe === "SUBSCRIBED") {
+        setSubscribe("SUBSCRIBE");
+      }
+
+      if (subExists === false) {
+        setSubscribed(true);
+
+        // firebase function to send channel title and id
+        await setDoc(
+          doc(db, user?.uid, "subscriptions", "channels", channelId),
+          {
+            channelId: channelId,
+            channelTitle: channelTitle,
+          }
+        );
+        setSubscribeClassName(
+          "border border-black-superLight bg-black-superLight text-black-superDuperLight text-xs w-24 h-8 rounded-sm cursor-pointer"
+        );
+        router.reload(window.location.pathname);
+      } else if (subExists === true) {
+        setSubscribed(false);
+        //firebase function to delete channel title and id
+        await deleteDoc(
+          doc(db, user?.uid, "subscriptions", "channels", channelId)
+        );
+        setSubscribeClassName(
+          "border border-red-600 bg-red-600 text-white text-xs w-24 h-8 rounded-sm cursor-pointer"
+        );
+        router.reload(window.location.pathname);
+      }
+    } else {
+      // add toast message here
+    }
+  }
 
   // const formattedDate = format(date, "MMMM do, yyyy");
   return (
@@ -136,30 +187,37 @@ function suggestedVideoPage({ data, comments, suggested }) {
             </div>
           </div>
           <div className="border-b border-gray-700" />
-          <div className="text-white text-left py-5 w-8/12">
-            <h3 className="font-semibold text-sm">
-              {data.items[0]?.snippet.channelTitle}
-            </h3>
-            {data.items[0]?.snippet.description.length > 700 ? (
-              <>
+          <div className="text-white text-left py-5 w-full flex flex-col-2">
+            <div className="w-8/12">
+              <h3 className="font-semibold text-sm">
+                {data.items[0]?.snippet.channelTitle}
+              </h3>
+              {data.items[0]?.snippet.description.length > 700 ? (
+                <>
+                  <p className="pt-4 text-xs">
+                    {textSnippet === false
+                      ? data.items[0]?.snippet.description.substring(0, 700) +
+                        "..."
+                      : data.items[0]?.snippet.description}
+                  </p>
+                  <p
+                    className="text-gray-400 cursor-pointer text-mobileSm sm:text-xs pt-2"
+                    onClick={showMore}
+                  >
+                    {readShow}
+                  </p>
+                </>
+              ) : (
                 <p className="pt-4 text-xs">
-                  {textSnippet === false
-                    ? data.items[0]?.snippet.description.substring(0, 700) +
-                      "..."
-                    : data.items[0]?.snippet.description}
+                  {data.items[0]?.snippet.description}
                 </p>
-                <p
-                  className="text-gray-400 cursor-pointer text-mobileSm sm:text-xs pt-2"
-                  onClick={showMore}
-                >
-                  {readShow}
-                </p>
-              </>
-            ) : (
-              <p className="pt-4 text-xs">
-                {data.items[0]?.snippet.description}
-              </p>
-            )}
+              )}
+            </div>
+            <div className="w-6/12 text-right">
+              <button className={subscribeClassName} onClick={subscribeClick}>
+                {subscribe}
+              </button>
+            </div>
           </div>
           <div className="border-b border-gray-700" />
 
@@ -176,7 +234,27 @@ function suggestedVideoPage({ data, comments, suggested }) {
 export default suggestedVideoPage;
 
 export async function getServerSideProps(context) {
-  const { id } = context.query;
+  const { id, userId, channelId } = context.query;
+
+  let subExists = false;
+  let className = "";
+  let subscribeText = "";
+  if (userId) {
+    const docRef = doc(db, userId, "subscriptions", "channels", channelId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      subExists = true;
+      subscribeText = "SUBSCRIBED";
+      className =
+        "border border-black-superLight bg-black-superLight text-black-superDuperLight text-xs w-24 h-8 rounded-sm cursor-pointer";
+    } else {
+      subExists = false;
+      subscribeText = "SUBSCRIBE";
+      className =
+        "border border-red-600 bg-red-600 text-white text-xs w-24 h-8 rounded-sm cursor-pointer";
+    }
+  }
 
   const suggested = await fetch(
     `https://youtube.googleapis.com/youtube/v3/search?relatedToVideoId=${id}&part=id&part=snippet&maxResults=50&type=video&key=${process.env.NEXT_PUBLIC_API_KEY}`
@@ -195,6 +273,9 @@ export async function getServerSideProps(context) {
       data,
       comments,
       suggested,
+      subExists,
+      className,
+      subscribeText,
     },
   };
 }
