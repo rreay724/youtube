@@ -8,40 +8,110 @@ import {
   SaveIcon,
 } from "@heroicons/react/outline";
 import { ThumbUpIcon, ThumbDownIcon } from "@heroicons/react/solid";
+import {
+  doc,
+  setDoc,
+  getFirestore,
+  deleteDoc,
+  getDoc,
+} from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 // Notes: needs description, subscriber counts, channel image, show more, show less for descrption, bell icon and subscribe button
 
-function searchVideoPage({ data, comments, searchVideo }) {
+function searchVideoPage({
+  data,
+  comments,
+  searchVideo,
+  subExists,
+  className,
+  subscribeText,
+}) {
   const router = useRouter();
 
-  console.log(searchVideo);
+  const {
+    id,
+    title,
+    viewCount,
+    dislikeCount,
+    likeCount,
+    publishedAt,
+    channelTitle,
+    channelId,
+    userId,
+  } = router.query;
 
-  const { id, title, viewCount, dislikeCount, likeCount, publishedAt } =
-    router.query;
+  console.log("USER", userId);
 
-  console.log(id);
+  const db = getFirestore();
 
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
   const [readShow, setReadShow] = useState("SHOW MORE");
   const [textSnippet, setTextSnippet] = useState(false);
+  const [subscribe, setSubscribe] = useState(subscribeText);
+  const [subscribed, setSubscribed] = useState(subExists);
+  const [subscribeClassName, setSubscribeClassName] = useState(className);
+  let viewInt = 0;
+  let likeInt = 0;
+  let month = "";
+  let day = "";
+  let year = "";
   if (!searchVideo.error && searchVideo.items) {
     const date = new Date(searchVideo.items[0].snippet.publishedAt);
-    const month = date.toString().split(" ")[1];
-    const day = date.toString().split(" ")[2];
+    month = date.toString().split(" ")[1];
+    day = date.toString().split(" ")[2];
 
-    const year = date.toString().split(" ")[3];
+    year = date.toString().split(" ")[3];
     const formattedViewCount = Number(
       searchVideo.items[0]?.statistics.viewCount
     ).toLocaleString();
 
-    let viewInt = parseInt(
+    viewInt = parseInt(
       searchVideo.items[0]?.statistics.viewCount.replace(/,/g, "")
     );
-    let likeInt = parseInt(
+    likeInt = parseInt(
       searchVideo.items[0]?.statistics.likeCount.replace(/,/g, "")
     );
-  } else {
+  }
+
+  // TODO:add toast message
+  async function subscribeClick() {
+    // const auth = getAuth();
+    // const user = auth.currentUser;
+    if (userId) {
+      if (subscribe === "SUBSCRIBE") {
+        setSubscribe("SUBSCRIBED");
+      } else if (subscribe === "SUBSCRIBED") {
+        setSubscribe("SUBSCRIBE");
+      }
+
+      if (subExists === false) {
+        setSubscribed(true);
+
+        // firebase function to send channel title and id
+        await setDoc(doc(db, userId, "subscriptions", "channels", channelId), {
+          channelId: channelId,
+          channelTitle: channelTitle,
+        });
+        setSubscribeClassName(
+          "border border-black-superLight bg-black-superLight text-black-superDuperLight text-xs w-24 h-8 rounded-sm cursor-pointer"
+        );
+        router.reload(window.location.pathname);
+      } else if (subExists === true) {
+        setSubscribed(false);
+        //firebase function to delete channel title and id
+        await deleteDoc(
+          doc(db, userId, "subscriptions", "channels", channelId)
+        );
+        setSubscribeClassName(
+          "border border-red-600 bg-red-600 text-white text-xs w-24 h-8 rounded-sm cursor-pointer"
+        );
+        router.reload(window.location.pathname);
+      }
+    } else {
+      // add toast message here
+    }
   }
 
   const showMore = () => {
@@ -151,32 +221,39 @@ function searchVideoPage({ data, comments, searchVideo }) {
               </div>
             </div>
             <div className="border-b border-gray-700" />
-            <div className="text-white text-left py-5 w-8/12">
-              <h3 className="font-semibold text-sm">
-                {searchVideo.items[0]?.snippet.channelTitle}
-              </h3>
-              {searchVideo.items[0]?.snippet.description.length > 700 ? (
-                <>
+            <div className="text-white text-left py-5 w-full flex flex-col-2">
+              <div className="w-8/12">
+                <h3 className="font-semibold text-sm">
+                  {searchVideo.items[0]?.snippet.channelTitle}
+                </h3>
+                {searchVideo.items[0]?.snippet.description.length > 700 ? (
+                  <>
+                    <p className="pt-4 text-xs">
+                      {textSnippet === false
+                        ? searchVideo.items[0]?.snippet.description.substring(
+                            0,
+                            700
+                          ) + "..."
+                        : searchVideo.items[0]?.snippet.description}
+                    </p>
+                    <p
+                      className="text-gray-400 cursor-pointer text-mobileSm sm:text-xs pt-2"
+                      onClick={showMore}
+                    >
+                      {readShow}
+                    </p>
+                  </>
+                ) : (
                   <p className="pt-4 text-xs">
-                    {textSnippet === false
-                      ? searchVideo.items[0]?.snippet.description.substring(
-                          0,
-                          700
-                        ) + "..."
-                      : searchVideo.items[0]?.snippet.description}
+                    {searchVideo.items[0]?.snippet.description}
                   </p>
-                  <p
-                    className="text-gray-400 cursor-pointer text-mobileSm sm:text-xs pt-2"
-                    onClick={showMore}
-                  >
-                    {readShow}
-                  </p>
-                </>
-              ) : (
-                <p className="pt-4 text-xs">
-                  {searchVideo.items[0]?.snippet.description}
-                </p>
-              )}
+                )}
+              </div>
+              <div className="w-6/12 text-right">
+                <button className={subscribeClassName} onClick={subscribeClick}>
+                  {subscribe}
+                </button>
+              </div>
             </div>
             <div className="border-b border-gray-700" />
 
@@ -203,7 +280,29 @@ function searchVideoPage({ data, comments, searchVideo }) {
 export default searchVideoPage;
 
 export async function getServerSideProps(context) {
-  const { id } = context.query;
+  const db = getFirestore();
+  const { id, channelId, userId } = context.query;
+
+  let subExists = false;
+  let className = "";
+  let subscribeText = "";
+  if (userId) {
+    const docRef = doc(db, userId, "subscriptions", "channels", channelId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      subExists = true;
+      subscribeText = "SUBSCRIBED";
+      className =
+        "border border-black-superLight bg-black-superLight text-black-superDuperLight text-xs w-24 h-8 rounded-sm cursor-pointer";
+    } else {
+      subExists = false;
+      subscribeText = "SUBSCRIBE";
+      className =
+        "border border-red-600 bg-red-600 text-white text-xs w-24 h-8 rounded-sm cursor-pointer";
+    }
+  }
+
   const data = await fetch(
     `https://youtube.googleapis.com/youtube/v3/search?relatedToVideoId=${id}&part=id&part=snippet&maxResults=50&type=video&key=${process.env.NEXT_PUBLIC_API_KEY}`
   ).then((res) => res.json());
@@ -221,6 +320,9 @@ export async function getServerSideProps(context) {
       data,
       comments,
       searchVideo,
+      subExists,
+      className,
+      subscribeText,
     },
   };
 }

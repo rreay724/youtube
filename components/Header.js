@@ -33,6 +33,7 @@ function Header() {
     router.push({
       pathname: "/searchPage",
       query: {
+        userId: user.uid,
         searchInput: searchInput,
       },
     });
@@ -49,7 +50,7 @@ function Header() {
         // ...
       })
       .then(() => {
-        router.push({ pathname: "/" });
+        router.push({ pathname: "/", user: user });
       })
       .catch((error) => {
         // Handle Errors here.

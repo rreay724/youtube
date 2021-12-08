@@ -5,7 +5,8 @@ import { Header, Sidebar, SearchThumbnail } from "../components/index";
 
 export default function searchPage({ data }) {
   const router = useRouter();
-  const { searchInput } = router.query;
+  const { searchInput, userId } = router.query;
+  console.log(data);
 
   return (
     <div className=" bg-black-medium min-h-screen">
@@ -33,6 +34,8 @@ export default function searchPage({ data }) {
                   channelTitle={item.snippet.channelTitle}
                   title={item.snippet.title}
                   publishedAt={item.snippet.publishedAt}
+                  channelId={item.snippet.channelId}
+                  userId={userId}
                 />
               ))
             ) : (

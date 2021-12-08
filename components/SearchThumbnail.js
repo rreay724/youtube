@@ -10,6 +10,8 @@ function SearchThumbnail({
   thumbnailWidth,
   thumbnailHeight,
   publishedAt,
+  channelId,
+  userId,
 }) {
   const router = useRouter();
 
@@ -22,6 +24,9 @@ function SearchThumbnail({
           pathname: "/searchVideoPage",
           query: {
             id: id,
+            channelId: channelId,
+            channelTitle: channelTitle,
+            userId: userId,
           },
         });
       }}

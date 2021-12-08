@@ -8,10 +8,24 @@ import {
   SaveIcon,
 } from "@heroicons/react/outline";
 import { ThumbUpIcon, ThumbDownIcon } from "@heroicons/react/solid";
+import {
+  doc,
+  setDoc,
+  getFirestore,
+  deleteDoc,
+  getDoc,
+} from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 // Notes: needs description, subscriber counts, channel image, show more, show less for descrption, bell icon and subscribe button
 
-function historyVideoPage({ data, comments }) {
+function historyVideoPage({
+  data,
+  comments,
+  subExists,
+  className,
+  subscribeText,
+}) {
   const router = useRouter();
 
   const {
@@ -28,14 +42,19 @@ function historyVideoPage({ data, comments }) {
     publishedAt,
     embedHtml,
     channelId,
+    user,
   } = router.query;
 
-  console.log(id);
+  const db = getFirestore();
 
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
   const [readShow, setReadShow] = useState("SHOW MORE");
   const [textSnippet, setTextSnippet] = useState(false);
+  const [subscribe, setSubscribe] = useState(subscribeText);
+  const [subscribed, setSubscribed] = useState(subExists);
+  const [subscribeClassName, setSubscribeClassName] = useState(className);
+
   const date = new Date(publishedAt);
   const month = date.toString().split(" ")[1];
   const day = date.toString().split(" ")[2];
@@ -58,6 +77,40 @@ function historyVideoPage({ data, comments }) {
       setReadShow("SHOW MORE");
     }
   };
+
+  async function subscribeClick() {
+    if (user) {
+      if (subscribe === "SUBSCRIBE") {
+        setSubscribe("SUBSCRIBED");
+      } else if (subscribe === "SUBSCRIBED") {
+        setSubscribe("SUBSCRIBE");
+      }
+
+      if (subExists === false) {
+        setSubscribed(true);
+
+        // firebase function to send channel title and id
+        await setDoc(doc(db, user, "subscriptions", "channels", channelId), {
+          channelId: channelId,
+          channelTitle: channelTitle,
+        });
+        setSubscribeClassName(
+          "border border-black-superLight bg-black-superLight text-black-superDuperLight text-xs w-24 h-8 rounded-sm cursor-pointer"
+        );
+        router.reload(window.location.pathname);
+      } else if (subExists === true) {
+        setSubscribed(false);
+        //firebase function to delete channel title and id
+        await deleteDoc(doc(db, user, "subscriptions", "channels", channelId));
+        setSubscribeClassName(
+          "border border-red-600 bg-red-600 text-white text-xs w-24 h-8 rounded-sm cursor-pointer"
+        );
+        router.reload(window.location.pathname);
+      }
+    } else {
+      // add toast message here
+    }
+  }
 
   const numFormatter = (num) => {
     if (num > 999 && num < 1000000) {
@@ -152,33 +205,37 @@ function historyVideoPage({ data, comments }) {
             </div>
           </div>
           <div className="border-b border-gray-700" />
-          <div className="text-white text-left py-5 w-8/12">
-            <h3 className="font-semibold text-sm">{channelTitle}</h3>
-            {description.length > 700 ? (
-              <>
-                <p className="pt-4 text-xs">
-                  {textSnippet === false
-                    ? description.substring(0, 700) + "..."
-                    : description}
-                </p>
-                <p
-                  className="text-gray-400 cursor-pointer text-mobileSm sm:text-xs pt-2"
-                  onClick={showMore}
-                >
-                  {readShow}
-                </p>
-              </>
-            ) : (
-              <p className="pt-4 text-xs">{description}</p>
-            )}
+          <div className="text-white text-left py-5 w-full flex flex-col-2">
+            <div className="w-8/12">
+              <h3 className="font-semibold text-sm">{channelTitle}</h3>
+              {description.length > 700 ? (
+                <>
+                  <p className="pt-4 text-xs">
+                    {textSnippet === false
+                      ? description.substring(0, 700) + "..."
+                      : description}
+                  </p>
+                  <p
+                    className="text-gray-400 cursor-pointer text-mobileSm sm:text-xs pt-2"
+                    onClick={showMore}
+                  >
+                    {readShow}
+                  </p>
+                </>
+              ) : (
+                <p className="pt-4 text-xs">{description}</p>
+              )}
+            </div>
+            <div className="w-6/12 text-right">
+              <button className={subscribeClassName} onClick={subscribeClick}>
+                {subscribe}
+              </button>
+            </div>
           </div>
           <div className="border-b border-gray-700" />
-
           <div>
             <CommentSection comments={comments} commentCount={commentCount} />
           </div>
-
-          {/* <div className=" border-b border-gray-700 h-5" /> */}
         </main>
         <Suggestions data={data} />
       </div>
@@ -189,7 +246,29 @@ function historyVideoPage({ data, comments }) {
 export default historyVideoPage;
 
 export async function getServerSideProps(context) {
-  const { id } = context.query;
+  const db = getFirestore();
+  const { id, channelId, user } = context.query;
+
+  let subExists = false;
+  let className = "";
+  let subscribeText = "";
+  if (user) {
+    const docRef = doc(db, user, "subscriptions", "channels", channelId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      subExists = true;
+      subscribeText = "SUBSCRIBED";
+      className =
+        "border border-black-superLight bg-black-superLight text-black-superDuperLight text-xs w-24 h-8 rounded-sm cursor-pointer";
+    } else {
+      subExists = false;
+      subscribeText = "SUBSCRIBE";
+      className =
+        "border border-red-600 bg-red-600 text-white text-xs w-24 h-8 rounded-sm cursor-pointer";
+    }
+  }
+
   const data = await fetch(
     `https://youtube.googleapis.com/youtube/v3/search?relatedToVideoId=${id}&part=id&part=snippet&maxResults=50&type=video&key=${process.env.NEXT_PUBLIC_API_KEY}`
   ).then((res) => res.json());
@@ -198,15 +277,13 @@ export async function getServerSideProps(context) {
     `https://youtube.googleapis.com/youtube/v3/commentThreads?videoId=${id}&maxResults=50&part=snippet&part=id&key=${process.env.NEXT_PUBLIC_API_KEY}`
   ).then((res) => res.json());
 
-  //   const searchVideo = await fetch(
-  //     `https://youtube.googleapis.com/youtube/v3/videos?part=snippet&part=statistics&part=player&id=${id}&key=${process.env.NEXT_PUBLIC_API_KEY}`
-  //   ).then((res) => res.json());
-
   return {
     props: {
       data,
       comments,
-      //   searchVideo,
+      subExists,
+      className,
+      subscribeText,
     },
   };
 }
