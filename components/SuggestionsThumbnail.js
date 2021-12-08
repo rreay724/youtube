@@ -31,6 +31,7 @@ function SuggestionsThumbnail({
           id: id,
           channelId: channelId,
           userId: user.uid,
+          channelTitle: channelTitle,
         },
       });
     } else {

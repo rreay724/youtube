@@ -29,7 +29,7 @@ function suggestedVideoPage({
 }) {
   const router = useRouter();
 
-  const { id, userId, channelId } = router.query;
+  const { id, userId, channelId, channelTitle } = router.query;
 
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
@@ -108,8 +108,8 @@ function suggestedVideoPage({
         await setDoc(
           doc(db, user?.uid, "subscriptions", "channels", channelId),
           {
-            channelId: data.items[0]?.snippet.channelId,
-            channelTitle: data.items[0]?.snippet.channelTitle,
+            channelId: channelId,
+            channelTitle: channelTitle,
           }
         );
         setSubscribeClassName(
