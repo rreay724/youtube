@@ -56,7 +56,6 @@ function Sidebar() {
           <ClockIcon className="w-10 p-2 mx-auto xl:mx-0" />
           <p className="text-mobileSm xl:pl-5 xl:text-sm">History</p>
         </div>
-        )
       </div>
     </div>
   );
