@@ -17,8 +17,6 @@ export default function savedPage({ historyJson }) {
   const { user } = router.query;
   const historyData = JSON.parse(historyJson);
 
-  console.log(historyData);
-
   return (
     <div className=" bg-black-medium min-h-screen">
       <Head>

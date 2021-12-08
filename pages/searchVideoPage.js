@@ -41,8 +41,6 @@ function searchVideoPage({
     userId,
   } = router.query;
 
-  console.log("USER", userId);
-
   const db = getFirestore();
 
   const [liked, setLiked] = useState(false);
