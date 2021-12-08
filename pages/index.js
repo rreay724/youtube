@@ -3,6 +3,7 @@ import Head from "next/head";
 import { Header, Sidebar, VideoThumbnail } from "../components/index";
 
 export default function Home({ data }) {
+  console.log(data);
   return (
     <div className=" bg-black-medium min-h-screen">
       <Head>
