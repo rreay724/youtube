@@ -4,6 +4,7 @@ import {
   CollectionIcon,
   SearchCircleIcon,
   ClockIcon,
+  BookmarkIcon,
 } from "@heroicons/react/outline";
 
 import { getAuth } from "firebase/auth";
@@ -18,6 +19,18 @@ function Sidebar() {
     if (user) {
       router.push({
         pathname: "/historyPage",
+        query: { user: user.uid },
+      });
+    }
+  };
+
+  const handleSaved = () => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (user) {
+      router.push({
+        pathname: "/savedPage",
         query: { user: user.uid },
       });
     }
@@ -55,6 +68,13 @@ function Sidebar() {
         >
           <ClockIcon className="w-10 p-2 mx-auto xl:mx-0" />
           <p className="text-mobileSm xl:pl-5 xl:text-sm">History</p>
+        </div>
+        <div
+          className="xl:sidebarComponent smallSidebarComponent"
+          onClick={handleSaved}
+        >
+          <BookmarkIcon className="w-10 p-2 mx-auto xl:mx-0" />
+          <p className="text-mobileSm xl:pl-5 xl:text-sm">Saved</p>
         </div>
       </div>
     </div>

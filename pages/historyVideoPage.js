@@ -15,7 +15,8 @@ import {
   deleteDoc,
   getDoc,
 } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // Notes: needs description, subscriber counts, channel image, show more, show less for descrption, bell icon and subscribe button
 
@@ -77,6 +78,40 @@ function historyVideoPage({
       setReadShow("SHOW MORE");
     }
   };
+
+  async function saveClick() {
+    if (user) {
+      await setDoc(doc(db, user, "savedVideos", "videos", id), {
+        id: id,
+        thumbnail: thumbnail,
+        thumbnailWidth: thumbnailWidth,
+        thumbnailHeight: thumbnailHeight,
+        description: description,
+        channelTitle: channelTitle,
+        title: title,
+        commentCount: commentCount,
+        likeCount: likeCount,
+        viewCount: viewCount,
+        publishedAt: publishedAt,
+        embedHtml: embedHtml,
+        channelId: channelId,
+        user: user,
+      });
+      const notify = () => {
+        toast("Video saved", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+        });
+      };
+
+      notify();
+    }
+  }
 
   async function subscribeClick() {
     if (user) {
@@ -198,10 +233,25 @@ function historyVideoPage({
                 <ShareIcon className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer" />{" "}
                 SHARE
               </p>
-              <p className="flex pl-4 items-center cursor-pointer text-mobileSm sm:text-sm">
-                <SaveIcon className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer item-top" />{" "}
+              <p
+                className="flex pl-4 items-center cursor-pointer text-mobileSm sm:text-sm"
+                onClick={saveClick}
+              >
+                <SaveIcon className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer item-top" />
                 SAVE
               </p>
+              <ToastContainer
+                position="top-right"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable={false}
+                pauseOnHover={false}
+                theme="dark"
+              />
             </div>
           </div>
           <div className="border-b border-gray-700" />

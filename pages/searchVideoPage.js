@@ -75,6 +75,40 @@ function searchVideoPage({
     );
   }
 
+  async function saveClick() {
+    if (user) {
+      await setDoc(doc(db, user, "savedVideos", "videos", id), {
+        id: id,
+        thumbnail: thumbnail,
+        thumbnailWidth: thumbnailWidth,
+        thumbnailHeight: thumbnailHeight,
+        description: description,
+        channelTitle: channelTitle,
+        title: title,
+        commentCount: commentCount,
+        likeCount: likeCount,
+        viewCount: viewCount,
+        publishedAt: publishedAt,
+        embedHtml: embedHtml,
+        channelId: channelId,
+        user: user,
+      });
+      const notify = () => {
+        toast("Video saved", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+        });
+      };
+
+      notify();
+    }
+  }
+
   // TODO:add toast message
   async function subscribeClick() {
     // const auth = getAuth();
