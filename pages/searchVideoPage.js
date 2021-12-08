@@ -76,8 +76,8 @@ function searchVideoPage({
   }
 
   async function saveClick() {
-    if (user) {
-      await setDoc(doc(db, user, "savedVideos", "videos", id), {
+    if (userId) {
+      await setDoc(doc(db, userId, "savedVideos", "videos", id), {
         id: id,
         thumbnail: searchVideo.items[0]?.snippet.thumbnails.medium.url,
         thumbnailWidth: searchVideo.items[0]?.snippet.thumbnails.medium.width,
@@ -91,7 +91,7 @@ function searchVideoPage({
         publishedAt: searchVideo.items[0]?.snippet.publishedAt,
         embedHtml: searchVideo.items[0]?.player.embedHtml,
         channelId: searchVideo.items[0]?.snippet.channelId,
-        user: user,
+        user: userId,
       });
       const notify = () => {
         toast("Video saved", {

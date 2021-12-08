@@ -16,6 +16,8 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // Notes: needs description, subscriber counts, channel image, show more, show less for descrption, bell icon and subscribe button
 
@@ -47,6 +49,40 @@ function suggestedVideoPage({
   ).toLocaleString();
 
   let viewInt = parseInt(data.items[0]?.statistics.viewCount.replace(/,/g, ""));
+
+  async function saveClick() {
+    if (userId) {
+      await setDoc(doc(db, userId, "savedVideos", "videos", id), {
+        id: id,
+        thumbnail: data.items[0]?.snippet.thumbnails.medium.url,
+        thumbnailWidth: data.items[0]?.snippet.thumbnails.medium.width,
+        thumbnailHeight: data.items[0]?.snippet.thumbnails.medium.height,
+        description: data.items[0]?.snippet.description,
+        channelTitle: data.items[0]?.snippet.channelTitle,
+        title: data.items[0]?.snippet.title,
+        commentCount: data.items[0]?.statistics.commentCount,
+        likeCount: data.items[0]?.statistics.likeCount,
+        viewCount: data.items[0]?.statistics.viewCount,
+        publishedAt: data.items[0]?.snippet.publishedAt,
+        embedHtml: data.items[0]?.player.embedHtml,
+        channelId: data.items[0]?.snippet.channelId,
+        user: userId,
+      });
+      const notify = () => {
+        toast("Video saved", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+        });
+      };
+
+      notify();
+    }
+  }
 
   const showMore = () => {
     if (textSnippet === false) {
@@ -190,10 +226,25 @@ function suggestedVideoPage({
                 <ShareIcon className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer" />
                 SHARE
               </p>
-              <p className="flex pl-4 items-center cursor-pointer text-mobileSm sm:text-sm">
+              <p
+                className="flex pl-4 items-center cursor-pointer text-mobileSm sm:text-sm"
+                onClick={saveClick}
+              >
                 <SaveIcon className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer item-top" />
                 SAVE
               </p>
+              <ToastContainer
+                position="top-right"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable={false}
+                pauseOnHover={false}
+                theme="dark"
+              />
             </div>
           </div>
           <div className="border-b border-gray-700" />
