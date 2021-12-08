@@ -16,6 +16,8 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // Notes: needs description, subscriber counts, channel image, show more, show less for descrption, bell icon and subscribe button
 
@@ -25,17 +27,19 @@ function videoPage({ data, comments, subExists, className, subscribeText }) {
 
   const {
     id,
+    userId,
+    thumbnail,
     title,
-    viewCount,
-    dislikeCount,
-    likeCount,
-    publishedAt,
-    embedHtml,
-    commentCount,
     description,
     channelTitle,
+    thumbnailWidth,
+    thumbnailHeight,
+    commentCount,
+    likeCount,
+    viewCount,
+    publishedAt,
+    embedHtml,
     channelId,
-    userId,
   } = router.query;
 
   const [liked, setLiked] = useState(false);
@@ -53,6 +57,40 @@ function videoPage({ data, comments, subExists, className, subscribeText }) {
 
   let viewInt = parseInt(viewCount.replace(/,/g, ""));
   let likeInt = parseInt(likeCount.replace(/,/g, ""));
+
+  async function saveClick() {
+    if (userId) {
+      await setDoc(doc(db, userId, "savedVideos", "videos", id), {
+        id: id,
+        thumbnail: thumbnail,
+        thumbnailWidth: thumbnailWidth,
+        thumbnailHeight: thumbnailHeight,
+        description: description,
+        channelTitle: channelTitle,
+        title: title,
+        commentCount: commentCount,
+        likeCount: likeCount,
+        viewCount: viewCount,
+        publishedAt: publishedAt,
+        embedHtml: embedHtml,
+        channelId: channelId,
+        user: userId,
+      });
+      const notify = () => {
+        toast("Video saved", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+        });
+      };
+
+      notify();
+    }
+  }
 
   const showMore = () => {
     if (textSnippet === false) {
@@ -193,10 +231,25 @@ function videoPage({ data, comments, subExists, className, subscribeText }) {
                 <ShareIcon className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer" />
                 SHARE
               </p>
-              <p className="flex pl-4 items-center cursor-pointer text-mobileSm sm:text-sm">
+              <p
+                className="flex pl-4 items-center cursor-pointer text-mobileSm sm:text-sm"
+                onClick={saveClick}
+              >
                 <SaveIcon className="w-5 sm:w-8 pr-1 sm:pr-2 cursor-pointer item-top" />
                 SAVE
               </p>
+              <ToastContainer
+                position="top-right"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable={false}
+                pauseOnHover={false}
+                theme="dark"
+              />
             </div>
           </div>
           <div className="border-b border-gray-700" />

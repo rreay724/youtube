@@ -6,7 +6,6 @@ import { Header, Sidebar, SearchThumbnail } from "../components/index";
 export default function searchPage({ data }) {
   const router = useRouter();
   const { searchInput, userId } = router.query;
-  console.log(data);
 
   return (
     <div className=" bg-black-medium min-h-screen">

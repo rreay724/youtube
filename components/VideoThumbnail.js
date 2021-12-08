@@ -62,6 +62,7 @@ function VideoThumbnail({
           query: {
             id: id,
             title: title,
+            thumbnail: thumbnail,
             viewCount: viewCount,
             commentCount: commentCount,
             likeCount: likeCount,
@@ -71,6 +72,9 @@ function VideoThumbnail({
             description: description,
             channelId: channelId,
             userId: user?.uid,
+            thumbnailWidth: thumbnailWidth,
+            thumbnailHeight: thumbnailHeight,
+            channelId: channelId,
           },
         });
         {
