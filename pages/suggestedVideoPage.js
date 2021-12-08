@@ -8,6 +8,14 @@ import {
   SaveIcon,
 } from "@heroicons/react/outline";
 import { ThumbUpIcon, ThumbDownIcon } from "@heroicons/react/solid";
+import {
+  doc,
+  setDoc,
+  getFirestore,
+  deleteDoc,
+  getDoc,
+} from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 // Notes: needs description, subscriber counts, channel image, show more, show less for descrption, bell icon and subscribe button
 
@@ -84,6 +92,8 @@ function suggestedVideoPage({
   async function subscribeClick() {
     const auth = getAuth();
     const user = auth.currentUser;
+    const db = getFirestore();
+
     if (user) {
       if (subscribe === "SUBSCRIBE") {
         setSubscribe("SUBSCRIBED");
@@ -98,8 +108,8 @@ function suggestedVideoPage({
         await setDoc(
           doc(db, user?.uid, "subscriptions", "channels", channelId),
           {
-            channelId: channelId,
-            channelTitle: channelTitle,
+            channelId: data.items[0]?.snippet.channelId,
+            channelTitle: data.items[0]?.snippet.channelTitle,
           }
         );
         setSubscribeClassName(
@@ -235,6 +245,7 @@ export default suggestedVideoPage;
 
 export async function getServerSideProps(context) {
   const { id, userId, channelId } = context.query;
+  const db = getFirestore();
 
   let subExists = false;
   let className = "";
