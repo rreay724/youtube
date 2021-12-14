@@ -29,10 +29,9 @@ function VideoThumbnail({
   const db = getFirestore();
   let today = new Date();
 
-  const auth = getAuth();
-  const user = auth.currentUser;
-
   async function sendDoc() {
+    const auth = getAuth();
+    const user = auth.currentUser;
     await setDoc(doc(db, user?.uid, "history", "videos", id), {
       userId: user.uid,
       videoId: id,
@@ -47,7 +46,6 @@ function VideoThumbnail({
       thumbnailHeight: thumbnailHeight,
       description: description,
       commentCount: commentCount,
-      // dislikeCount: dislikeCount,
       likeCount: likeCount,
       viewCount: viewCount,
       embedHtml: embedHtml,
@@ -57,6 +55,8 @@ function VideoThumbnail({
   return (
     <div
       onClick={() => {
+        const auth = getAuth();
+        const user = auth.currentUser;
         router.push({
           pathname: "/videoPage",
           query: {
