@@ -47,7 +47,7 @@ function VideoThumbnail({
       thumbnailHeight: thumbnailHeight,
       description: description,
       commentCount: commentCount,
-      dislikeCount: dislikeCount,
+      // dislikeCount: dislikeCount,
       likeCount: likeCount,
       viewCount: viewCount,
       embedHtml: embedHtml,
