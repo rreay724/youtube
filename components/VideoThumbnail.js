@@ -57,6 +57,8 @@ function VideoThumbnail({
   return (
     <div
       onClick={() => {
+        const auth = getAuth();
+        const user = auth.currentUser;
         router.push({
           pathname: "/videoPage",
           query: {
